@@ -1,0 +1,18 @@
+<manifest>
+    <main-class>com.productions.celestial.bots.crafter.Crafter</main-class>
+    <name>Celestial Crafter</name>
+    <description>Creates Air Battlestaffs</description>
+    <version>1.0.0</version>
+    <compatibility>
+        <game-type>RS3</game-type>
+    </compatibility>
+    <categories>
+        <category>CRAFTING</category>
+        <category>MONEYMAKING</category>
+    </categories>
+    <internal-id>Crafter</internal-id>
+    <resources/>
+    <open-source>false</open-source>
+    <hidden>true</hidden>
+    <tag-line>Make Battlestaffs all day!</tag-line>
+</manifest>
