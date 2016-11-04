@@ -30,32 +30,24 @@ public class IndependentLoopingThread extends Thread {
 
     @Override
     public void run() {
-        final AbstractBot bot = Environment.getBot();
-        if (bot != null) {
-            
-        }
-
-
-
-
-
-
         while (!interrupted()) {
-            final AbstractBot script = Environment.getBot();
-            if (script == null || AbstractBot.State.STOPPED.equals(script.getState())) {
-                return;
-            } else {
-                try {
-                    runnable.run();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Execution.delay(frequency);
-            }
+            runnable.run();
+            Execution.delay(frequency);
         }
     }
 
-    public void refresh() {
-        runnable.run();
-    }
+    //TODO revert once bug is fixed (Environment.getBot() throwing NPE)
+
+    //@Override
+    //public void run() {
+    //    final AbstractBot bot = Environment.getBot();
+    //    if (bot != null) {
+    //        while (!interrupted() && bot.getState() != AbstractBot.State.STOPPED) {
+    //            runnable.run();
+    //            Execution.delay(frequency);
+    //        }
+    //    } else {
+    //        throw new IllegalStateException("Bot is null");
+    //    }
+    //}
 }

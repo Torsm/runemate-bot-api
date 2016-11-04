@@ -1,6 +1,7 @@
 package net.celestialproductions.api.bot.framework.extender;
 
 import com.runemate.game.api.client.embeddable.EmbeddableUI;
+import com.runemate.game.api.hybrid.Environment;
 import com.runemate.game.api.hybrid.util.StopWatch;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.data.ScriptMetaData;
@@ -17,18 +18,19 @@ import net.celestialproductions.api.util.javafx.FXMLAttacher;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * TODO: Rename?
  * @author Savior
  */
-public final class BotExtender<T extends AbstractBot & IBotExtender<T>> implements EmbeddableUI {
+public final class BotExtender<T extends AbstractBot & Mainclass<T>> implements EmbeddableUI {
     private final T bot;
     private final StopWatch timer;
     private final FXMLAttacher fxmlAttacher;
-    private final BreakScheduler breakScheduler;
+    private final BreakScheduler<T> breakScheduler;
     private final ObjectProperty<Node> botInterfaceProperty;
     private final AtomicBoolean initializedSettings;
+    private final AtomicReference<SpectreUI<T>> spectreUI;
     private Antipattern.List antipatterns;
     private String status;
 
@@ -36,9 +38,10 @@ public final class BotExtender<T extends AbstractBot & IBotExtender<T>> implemen
         this.bot = bot;
         this.timer = new StopWatch();
         this.fxmlAttacher = new FXMLAttacher(bot);
-        this.breakScheduler = new BreakScheduler(bot);
+        this.breakScheduler = new BreakScheduler<>(bot);
         this.botInterfaceProperty = new SimpleObjectProperty<>(null);
         this.initializedSettings = new AtomicBoolean(false);
+        this.spectreUI = new AtomicReference<>(null);
         this.antipatterns = new Antipattern.List();
 
         setStatus("Waiting for start...");
@@ -69,7 +72,8 @@ public final class BotExtender<T extends AbstractBot & IBotExtender<T>> implemen
         }
 
         if (botInterfaceProperty.get() == null) {
-                botInterfaceProperty.set(bot.botConfigurator() != null ? new BotConfigurationUI<>(bot) : new SpectreUI<>(bot));
+            spectreUI.set(new SpectreUI<>(bot));
+            botInterfaceProperty.set(bot.botConfigurator() != null ? new BotConfigurationUI<>(bot) : spectreUI.get());
         }
 
         return botInterfaceProperty;
@@ -84,8 +88,15 @@ public final class BotExtender<T extends AbstractBot & IBotExtender<T>> implemen
         return 0;
     }
 
-    public void setStatus(final String status) {
+    public SpectreUI<T> spectreUI() {
+        while (spectreUI.get() == null) {
+            Execution.delay(100L);
+        }
 
+        return spectreUI.get();
+    }
+
+    public void setStatus(final String status) {
         this.status = status;
     }
 
@@ -119,5 +130,10 @@ public final class BotExtender<T extends AbstractBot & IBotExtender<T>> implemen
 
     public FXMLAttacher fxmlAttacher() {
         return fxmlAttacher;
+    }
+
+    public static Mainclass instance() {
+        final AbstractBot bot = Environment.getBot();
+        return bot instanceof Mainclass ? (Mainclass) bot : null;
     }
 }

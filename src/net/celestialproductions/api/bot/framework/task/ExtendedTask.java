@@ -5,7 +5,7 @@ import com.runemate.game.api.hybrid.entities.Player;
 import com.runemate.game.api.hybrid.region.Players;
 import com.runemate.game.api.script.framework.task.Task;
 import com.runemate.game.api.script.framework.task.TaskBot;
-import net.celestialproductions.api.bot.framework.extender.IBotExtender;
+import net.celestialproductions.api.bot.framework.extender.Mainclass;
 import net.celestialproductions.api.bot.framework.accessors.AntipatternAccessor;
 import net.celestialproductions.api.bot.framework.accessors.BreakschedulerAccessor;
 import net.celestialproductions.api.bot.framework.accessors.PlayerAccessor;
@@ -42,8 +42,8 @@ public abstract class ExtendedTask<B extends TaskBot> extends Task implements Pl
     public final Antipattern antipattern() {
         if (antipatterns != null) {
             return antipatterns.random();
-        } else if (bot instanceof IBotExtender) {
-            final IBotExtender botExtender = (IBotExtender) bot;
+        } else if (bot instanceof Mainclass) {
+            final Mainclass botExtender = (Mainclass) bot;
             return botExtender.getAntipatterns().random();
         }
         return null;
@@ -51,8 +51,8 @@ public abstract class ExtendedTask<B extends TaskBot> extends Task implements Pl
 
     @Override
     public BreakScheduler breakScheduler() {
-        if (bot instanceof IBotExtender) {
-            final IBotExtender botExtender = (IBotExtender) bot;
+        if (bot instanceof Mainclass) {
+            final Mainclass botExtender = (Mainclass) bot;
             return botExtender.breakScheduler();
         }
         return null;

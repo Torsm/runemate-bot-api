@@ -1,4 +1,4 @@
-package net.celestialproductions.api.game;
+package net.celestialproductions.api.game.items;
 
 import com.runemate.game.api.hybrid.entities.definitions.ItemDefinition;
 import com.runemate.game.api.hybrid.local.Varps;

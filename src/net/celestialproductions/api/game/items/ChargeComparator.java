@@ -6,6 +6,7 @@ import com.runemate.game.api.hybrid.local.hud.interfaces.SpriteItem;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,22 +23,20 @@ public class ChargeComparator implements Comparator<SpriteItem> {
     }
 
     private Integer getCharge(final SpriteItem s) {
-        Integer i = cache.get(s);
-
-        if (i == null) {
+        return cache.computeIfAbsent(s, k -> {
             final ItemDefinition def = s.getDefinition();
             final String name = def == null ? null : def.getName();
+
+            String result = "";
 
             if (name != null) {
                 final Matcher m = CHARGE_PATTERN.matcher(name);
                 if (m.find()) {
-                    final String result = m.group().replace("(", "").replace(")", "");
-                    i = Integer.parseInt(result);
-                    cache.put(s, i);
+                    result = m.group().replace("(", "").replace(")", "");
                 }
             }
-        }
 
-        return i;
+            return Integer.parseInt(result);
+        });
     }
 }

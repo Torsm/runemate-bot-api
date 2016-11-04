@@ -3,6 +3,7 @@ package net.celestialproductions.api.bot.framework.extender;
 import com.runemate.game.api.hybrid.util.StopWatch;
 import com.runemate.game.api.script.framework.AbstractBot;
 import javafx.scene.Node;
+import net.celestialproductions.api.bot.spectreui.SpectreUI;
 import net.celestialproductions.api.bot.spectreui.core.InvalidSetupException;
 import net.celestialproductions.api.game.antipattern.Antipattern;
 import net.celestialproductions.api.game.breakhandler.BreakScheduler;
@@ -16,15 +17,13 @@ import java.util.Collection;
  * The advantage for this "bridge" interface is that the main bot class can freely extend any kind of AbstractBot, while
  * maintaining the diversity of extra methods.
  *
- * TODO: rename?
- *
  * @author Savior
  */
-public interface IBotExtender<T extends AbstractBot & IBotExtender<T>> {
+public interface Mainclass<T extends AbstractBot & Mainclass<T>> {
 
     /**
      * Initialize a persistent instance of BotExtender in your main class' constructor and pass it as embeddable ui.
-     * Call BotExtender#initialize() in the onStart() method of your main class.
+     * Call BotExtender#reset() in the onStart() method of your main class.
      *
      * @return The BotExtender instance
      */
@@ -79,6 +78,10 @@ public interface IBotExtender<T extends AbstractBot & IBotExtender<T>> {
 
     // The rest of the methods are trivial getters and setters and do not need to be implemented at any point.
 
+
+    default SpectreUI<T> spectreUI() {
+        return extender().spectreUI();
+    }
 
     default boolean isPremium() {
         return extender().isPremium();
