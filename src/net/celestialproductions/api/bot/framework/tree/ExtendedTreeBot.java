@@ -18,7 +18,12 @@ public class ExtendedTreeBot extends TreeBot {
         this.tree = root;
     }
 
+    public TreeTask getTree() {
+        return tree;
+    }
+
     private class RootTask extends TreeTask {
+
         @Override
         public boolean isLeaf() {
             return tree == null;

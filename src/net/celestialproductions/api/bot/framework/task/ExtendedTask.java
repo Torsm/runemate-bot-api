@@ -14,14 +14,54 @@ import net.celestialproductions.api.game.antipattern.Antipattern;
 import net.celestialproductions.api.game.breakhandler.BreakScheduler;
 
 import java.util.Collection;
+import java.util.concurrent.Callable;
 
 /**
  * @author Savior
  */
-public abstract class ExtendedTask<B extends TaskBot> extends Task implements PlayerAccessor, BotAccessor<B>, AntipatternAccessor, BreakschedulerAccessor {
+public class ExtendedTask<B extends TaskBot> extends Task implements PlayerAccessor, BotAccessor<B>, AntipatternAccessor, BreakschedulerAccessor {
+    private final Callable<Boolean> validate;
+    private final Runnable execute;
     private Antipattern.List antipatterns;
     private Player local;
     private B bot;
+
+    public ExtendedTask() {
+        this(null, null);
+    }
+
+    public ExtendedTask(final Callable<Boolean> validate) {
+        this(validate, null);
+    }
+
+    public ExtendedTask(final Runnable execute) {
+        this(null, execute);
+    }
+
+    public ExtendedTask(final Callable<Boolean> validate, final Runnable execute) {
+        this.validate = validate;
+        this.execute = execute;
+    }
+
+    @Override
+    public boolean validate() {
+        if (validate != null) {
+            try {
+                return validate.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void execute() {
+        if (execute != null) {
+            execute.run();
+        }
+    }
 
     @Override
     public final Player local() {
