@@ -20,7 +20,7 @@ public final class BreakScheduler<T extends AbstractBot & Mainclass<T>> {
 
     public void initialize() {
         final BreakConfigurator configurator = new BreakConfigurator(bot, this);
-        final Tab tab = new Tab("Break scheduler", configurator, Tab.Priority.LOW);
+        final Tab tab = new Tab("Break scheduler", configurator, Tab.Priority.HIGHEST);
         bot.spectreUI().add(tab);
         reset();
     }

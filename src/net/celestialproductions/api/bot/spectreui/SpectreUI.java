@@ -64,7 +64,7 @@ public class SpectreUI<T extends AbstractBot & Mainclass<T>> extends VBox implem
         final ProfitPane<T> profitPane = new ProfitPane<>(bot);
         add(new Tab("Profit", profitPane, Tab.Priority.LOWEST));
 
-        new IndependentLoopingThread("SpectreUI update thread", this::update, 1000L).start();
+        new IndependentLoopingThread(bot, "SpectreUI update thread", this::update, 1000L).start();
     }
 
     public void update() {
