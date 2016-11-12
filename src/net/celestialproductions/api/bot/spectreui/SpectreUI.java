@@ -50,13 +50,15 @@ public class SpectreUI<T extends AbstractBot & Mainclass<T>> extends VBox implem
         } else {
             changeOptionsButton.setVisible(false);
             changeOptionsButton.setDisable(true);
-            try {
-                bot.startButtonPerformed();
-                bot.timer().start();
-            } catch (InvalidSetupException e) {
-                ClientUI.showAlert(e.getMessage());
-                bot.stop();
-            }
+            bot.getPlatform().invokeLater(() -> {
+                try {
+                    bot.startButtonPerformed();
+                    bot.timer().start();
+                } catch (InvalidSetupException e) {
+                    ClientUI.showAlert(e.getMessage());
+                    bot.stop();
+                }
+            });
         }
 
         bot.getEventDispatcher().addListener(this);

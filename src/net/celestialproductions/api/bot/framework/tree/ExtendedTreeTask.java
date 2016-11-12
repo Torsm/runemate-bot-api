@@ -20,9 +20,9 @@ import java.util.concurrent.Callable;
  * @author Savior
  */
 public class ExtendedTreeTask<T extends TreeBot & Mainclass<T>> extends TreeTask implements PlayerAccessor, BotAccessor<T>, AntipatternAccessor, BreakschedulerAccessor {
-    private TreeTask failureTask;
-    private TreeTask successTask;
     private Callable<Boolean> validate;
+    private TreeTask successTask;
+    private TreeTask failureTask;
     private Antipattern.List antipatterns;
     private Player local;
     private T bot;
@@ -32,22 +32,22 @@ public class ExtendedTreeTask<T extends TreeBot & Mainclass<T>> extends TreeTask
     }
 
     public ExtendedTreeTask(final Callable<Boolean> validate) {
-        this(null, null, validate);
+        this(validate, null, null);
     }
 
-    public ExtendedTreeTask(final TreeTask failureTask, final TreeTask successTask) {
-        this(failureTask, successTask, null);
+    public ExtendedTreeTask(final TreeTask successTask, final TreeTask failureTask) {
+        this(null, successTask, failureTask);
     }
 
-    public ExtendedTreeTask(final TreeTask failureTask, final TreeTask successTask, final Callable<Boolean> validate) {
-        this.failureTask = failureTask;
-        this.successTask = successTask;
+    public ExtendedTreeTask(final Callable<Boolean> validate, final TreeTask successTask, final TreeTask failureTask) {
         this.validate = validate;
+        this.successTask = successTask;
+        this.failureTask = failureTask;
     }
 
     @Override
     public boolean isLeaf() {
-        return failureTask == null && successTask == null;
+        return successTask() == null && failureTask() == null;
     }
 
     @Override
@@ -56,13 +56,21 @@ public class ExtendedTreeTask<T extends TreeBot & Mainclass<T>> extends TreeTask
     }
 
     @Override
+    public TreeTask successTask() {
+        return successTask == null ? new ExtendedTreeBot.EmptyLeaf() : successTask;
+    }
+
+    @Override
     public TreeTask failureTask() {
         return failureTask == null ? new ExtendedTreeBot.EmptyLeaf() : failureTask;
     }
 
-    @Override
-    public TreeTask successTask() {
-        return successTask == null ? new ExtendedTreeBot.EmptyLeaf() : successTask;
+    public void setSuccessTask(final TreeTask successTask) {
+        this.successTask = successTask;
+    }
+
+    public void setFailureTask(final TreeTask failureTask) {
+        this.failureTask = failureTask;
     }
 
     @Override

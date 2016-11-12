@@ -3,6 +3,7 @@ package net.celestialproductions.api.game.location.traversal;
 import com.runemate.game.api.hybrid.entities.details.Locatable;
 import com.runemate.game.api.hybrid.location.Area;
 import com.runemate.game.api.hybrid.location.navigation.Path;
+import com.runemate.game.api.hybrid.location.navigation.Traversal;
 import com.runemate.game.api.hybrid.location.navigation.basic.BresenhamPath;
 import com.runemate.game.api.hybrid.location.navigation.cognizant.RegionPath;
 import com.runemate.game.api.hybrid.location.navigation.web.WebPathBuilder;
@@ -13,6 +14,10 @@ import com.runemate.game.api.hybrid.util.calculations.Distance;
  * @author Savior
  */
 public final class Pathing {
+
+    public static Path buildSafePathTo(final Locatable destination) {
+        return buildSafePathTo(destination, Traversal.getDefaultWeb().getPathBuilder());
+    }
 
     public static Path buildSafePathTo(final Locatable destination, final WebPathBuilder builder) {
         Path optional = null;
@@ -32,8 +37,8 @@ public final class Pathing {
         return optional;
     }
 
-    public static Path buildSafePathTo(final Locatable destination) {
-        return buildSafePathTo(destination, null);
+    public static double totalDistance(final Path path) {
+        return totalDistance(path, Distance.getDefaultAlgorithm());
     }
 
     public static double totalDistance(final Path path, final Distance.Algorithm algorithm) {
@@ -52,10 +57,6 @@ public final class Pathing {
         }
 
         return distance;
-    }
-
-    public static double totalDistance(final Path path) {
-        return totalDistance(path, Distance.getDefaultAlgorithm());
     }
 
 }

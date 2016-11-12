@@ -17,7 +17,7 @@ public class TeleportUrn<T extends TaskBot & Mainclass<T>> extends ExtendedTask<
 
     @Override
     public boolean validate() {
-        return Varbits.load(0).getValue() == 0 && (urn = Inventory.newQuery().actions("Teleport urn").results().first()) != null;
+        return Varbits.load(30673).getValue() == 0 && (urn = Inventory.newQuery().actions("Teleport urn").results().first()) != null;
     }
 
     @Override
