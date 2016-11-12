@@ -1,15 +1,15 @@
-package net.celestialproductions.api.bot.framework.task;
+package net.celestialproductions.api.bot.framework.tree;
 
 import com.runemate.game.api.hybrid.Environment;
 import com.runemate.game.api.hybrid.entities.Player;
 import com.runemate.game.api.hybrid.region.Players;
-import com.runemate.game.api.script.framework.task.Task;
-import com.runemate.game.api.script.framework.task.TaskBot;
-import net.celestialproductions.api.bot.framework.extender.Mainclass;
+import com.runemate.game.api.script.framework.tree.TreeBot;
+import com.runemate.game.api.script.framework.tree.TreeTask;
 import net.celestialproductions.api.bot.framework.accessors.AntipatternAccessor;
+import net.celestialproductions.api.bot.framework.accessors.BotAccessor;
 import net.celestialproductions.api.bot.framework.accessors.BreakschedulerAccessor;
 import net.celestialproductions.api.bot.framework.accessors.PlayerAccessor;
-import net.celestialproductions.api.bot.framework.accessors.BotAccessor;
+import net.celestialproductions.api.bot.framework.extender.Mainclass;
 import net.celestialproductions.api.game.antipattern.Antipattern;
 import net.celestialproductions.api.game.breakhandler.BreakScheduler;
 
@@ -19,29 +19,50 @@ import java.util.concurrent.Callable;
 /**
  * @author Savior
  */
-public class ExtendedTask<T extends TaskBot & Mainclass<T>> extends Task implements PlayerAccessor, BotAccessor<T>, AntipatternAccessor, BreakschedulerAccessor {
-    private final Callable<Boolean> validate;
-    private final Runnable execute;
+public class ExtendedTreeTask<T extends TreeBot & Mainclass<T>> extends TreeTask implements PlayerAccessor, BotAccessor<T>, AntipatternAccessor, BreakschedulerAccessor {
+    private TreeTask failureTask;
+    private TreeTask successTask;
+    private Callable<Boolean> validate;
     private Antipattern.List antipatterns;
     private Player local;
     private T bot;
 
-    public ExtendedTask(final Task... children) {
-        this(null, null, children);
+    public ExtendedTreeTask() {
+        this(null, null, null);
     }
 
-    public ExtendedTask(final Callable<Boolean> validate, final Task... children) {
-        this(validate, null, children);
+    public ExtendedTreeTask(final Callable<Boolean> validate) {
+        this(null, null, validate);
     }
 
-    public ExtendedTask(final Runnable execute, final Task... children) {
-        this(null, execute, children);
+    public ExtendedTreeTask(final TreeTask failureTask, final TreeTask successTask) {
+        this(failureTask, successTask, null);
     }
 
-    public ExtendedTask(final Callable<Boolean> validate, final Runnable execute, final Task... children) {
-        super(children);
+    public ExtendedTreeTask(final TreeTask failureTask, final TreeTask successTask, final Callable<Boolean> validate) {
+        this.failureTask = failureTask;
+        this.successTask = successTask;
         this.validate = validate;
-        this.execute = execute;
+    }
+
+    @Override
+    public boolean isLeaf() {
+        return failureTask == null && successTask == null;
+    }
+
+    @Override
+    public void execute() {
+
+    }
+
+    @Override
+    public TreeTask failureTask() {
+        return failureTask == null ? new ExtendedTreeBot.EmptyLeaf() : failureTask;
+    }
+
+    @Override
+    public TreeTask successTask() {
+        return successTask == null ? new ExtendedTreeBot.EmptyLeaf() : successTask;
     }
 
     @Override
@@ -55,13 +76,6 @@ public class ExtendedTask<T extends TaskBot & Mainclass<T>> extends Task impleme
             }
         }
         return true;
-    }
-
-    @Override
-    public void execute() {
-        if (execute != null) {
-            execute.run();
-        }
     }
 
     @Override

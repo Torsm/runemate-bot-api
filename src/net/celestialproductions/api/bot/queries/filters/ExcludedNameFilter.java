@@ -7,6 +7,7 @@ import com.runemate.game.api.hybrid.entities.definitions.ItemDefinition;
 import com.runemate.game.api.hybrid.entities.definitions.NpcDefinition;
 import com.runemate.game.api.hybrid.local.hud.interfaces.SpriteItem;
 import com.runemate.game.api.hybrid.util.Regex;
+import com.runemate.game.api.rs3.local.hud.interfaces.eoc.ActionBar;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -84,6 +85,31 @@ public abstract class ExcludedNameFilter<T> implements Predicate<T> {
             public boolean test(GameObject gameObject) {
                 final GameObjectDefinition def = gameObject.getDefinition();
                 final String name = def == null ? null : def.getName();
+                if (name != null) {
+                    for (Pattern pattern : names) {
+                        if (pattern.matcher(name).matches()) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+        };
+    }
+
+    public static ExcludedNameFilter<ActionBar.Slot> slot(final String... names) {
+        return ExcludedNameFilter.slot(Regex.getPatternsForExactStrings(names));
+    }
+
+    public static ExcludedNameFilter<ActionBar.Slot> slot(final Pattern... names) {
+        return ExcludedNameFilter.slot(Arrays.asList(names));
+    }
+
+    public static ExcludedNameFilter<ActionBar.Slot> slot(final Collection<Pattern> names) {
+        return new ExcludedNameFilter<ActionBar.Slot>() {
+            @Override
+            public boolean test(ActionBar.Slot slot) {
+                final String name = slot.getName();
                 if (name != null) {
                     for (Pattern pattern : names) {
                         if (pattern.matcher(name).matches()) {

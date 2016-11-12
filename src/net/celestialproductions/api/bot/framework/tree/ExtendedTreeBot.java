@@ -1,5 +1,6 @@
 package net.celestialproductions.api.bot.framework.tree;
 
+import com.runemate.game.api.script.framework.tree.LeafTask;
 import com.runemate.game.api.script.framework.tree.TreeBot;
 import com.runemate.game.api.script.framework.tree.TreeTask;
 
@@ -49,6 +50,14 @@ public class ExtendedTreeBot extends TreeBot {
         @Override
         public boolean validate() {
             return tree.validate();
+        }
+    }
+
+    public static class EmptyLeaf extends LeafTask {
+
+        @Override
+        public void execute() {
+
         }
     }
 }
