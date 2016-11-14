@@ -16,7 +16,7 @@ public class BreakConfigurator extends VBox implements Initializable {
     public BreakConfigurator(final Mainclass bot, final BreakScheduler scheduler) {
         this.scheduler = scheduler;
 
-        bot.fxmlAttacher().attach(this, "resources/fxml/BreakConfigurator.fxml");
+        bot.fxmlAttacher().attach(this, "resources/fxml/spectreui/BreakConfigurator.fxml");
     }
 
     @Override
