@@ -85,11 +85,11 @@ public class TimeableEntityCollection<T extends TimeableEntity> extends CopyOnWr
     }
 
     private final static class PropertyCache {
-        private final boolean available;
-        private final long availabilityAge;
-        private final double distance;
+        final boolean available;
+        final long availabilityAge;
+        final double distance;
 
-        private PropertyCache(boolean available, long availabilityAge, double distance) {
+        private PropertyCache(final boolean available, final long availabilityAge, final double distance) {
             this.available = available;
             this.availabilityAge = availabilityAge;
             this.distance = distance;

@@ -3,7 +3,6 @@ package net.celestialproductions.api.game.trivial_tasks;
 import com.runemate.game.api.hybrid.Environment;
 import com.runemate.game.api.hybrid.RuneScape;
 import com.runemate.game.api.hybrid.local.Camera;
-import com.runemate.game.api.hybrid.util.calculations.Random;
 import com.runemate.game.api.script.framework.task.Task;
 
 /**

@@ -5,10 +5,6 @@ import com.runemate.game.api.hybrid.entities.Player;
 import com.runemate.game.api.hybrid.region.Players;
 import com.runemate.game.api.script.framework.tree.TreeBot;
 import com.runemate.game.api.script.framework.tree.TreeTask;
-import net.celestialproductions.api.bot.framework.accessors.AntipatternAccessor;
-import net.celestialproductions.api.bot.framework.accessors.BotAccessor;
-import net.celestialproductions.api.bot.framework.accessors.BreakschedulerAccessor;
-import net.celestialproductions.api.bot.framework.accessors.PlayerAccessor;
 import net.celestialproductions.api.bot.framework.extender.Mainclass;
 import net.celestialproductions.api.game.antipattern.Antipattern;
 import net.celestialproductions.api.game.breakhandler.BreakScheduler;
@@ -19,7 +15,7 @@ import java.util.concurrent.Callable;
 /**
  * @author Savior
  */
-public class ExtendedTreeTask<T extends TreeBot & Mainclass<T>> extends TreeTask implements PlayerAccessor, BotAccessor<T>, AntipatternAccessor, BreakschedulerAccessor {
+public class ExtendedTreeTask<T extends TreeBot & Mainclass<T>> extends TreeTask {
     private Callable<Boolean> validate;
     private TreeTask successTask;
     private TreeTask failureTask;
@@ -86,14 +82,12 @@ public class ExtendedTreeTask<T extends TreeBot & Mainclass<T>> extends TreeTask
         return true;
     }
 
-    @Override
     public final Player local() {
         if (local == null || !local.isValid())
             local = Players.getLocal();
         return local;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public final T bot() {
         if (bot == null)
@@ -101,7 +95,6 @@ public class ExtendedTreeTask<T extends TreeBot & Mainclass<T>> extends TreeTask
         return bot;
     }
 
-    @Override
     public final Antipattern antipattern() {
         if (antipatterns != null) {
             return antipatterns.random();
@@ -109,7 +102,6 @@ public class ExtendedTreeTask<T extends TreeBot & Mainclass<T>> extends TreeTask
         return bot().getAntipatterns().random();
     }
 
-    @Override
     public final BreakScheduler breakScheduler() {
         return bot().breakScheduler();
     }

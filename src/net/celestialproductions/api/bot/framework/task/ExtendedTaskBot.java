@@ -2,9 +2,7 @@ package net.celestialproductions.api.bot.framework.task;
 
 import com.runemate.game.api.script.framework.task.Task;
 import com.runemate.game.api.script.framework.task.TaskBot;
-import com.runemate.game.api.script.framework.task.TaskScript;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Stack;
 

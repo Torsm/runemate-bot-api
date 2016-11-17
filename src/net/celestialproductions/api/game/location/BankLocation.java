@@ -13,7 +13,7 @@ public enum BankLocation implements Locatable {
     ARDOUGNE_EAST("Ardougne East",                       Type.FULL,    new Coordinate(2655, 3283, 0), new Coordinate(2655, 3283, 0)),
     BARBARIAN_OUTPOST("Barbarian outpost",               Type.FULL,    new Coordinate(2536, 3572, 0), new Coordinate(2536, 3572, 0)),
     BURGH_DE_ROTT("Burgh de Rott",                       Type.FULL,    new Coordinate(3494, 3211, 0), new Coordinate(3494, 3211, 0)),
-    BURTHOPE("Burthope",                                 Type.FULL,    new Coordinate(2888, 3535, 0), new Coordinate(-1, -1)),
+    BURTHORPE("Burthorpe",                               Type.FULL,    new Coordinate(2888, 3535, 0), new Coordinate(-1, -1)),
     CATHERBY("Catherby",                                 Type.FULL,    new Coordinate(2809, 3440, 0), new Coordinate(2809, 3440, 0)),
     DRAYNOR_VILLAGE("Draynor Village",                   Type.FULL,    new Coordinate(3091, 3244, 0), new Coordinate(3093, 3243, 0)),
     EDGEVILLE("Edgeville",                               Type.FULL,    new Coordinate(3094, 3496, 0), new Coordinate(3094, 3491, 0)),

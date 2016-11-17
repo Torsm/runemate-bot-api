@@ -6,7 +6,6 @@ import com.runemate.game.api.hybrid.local.hud.interfaces.SpriteItem;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
