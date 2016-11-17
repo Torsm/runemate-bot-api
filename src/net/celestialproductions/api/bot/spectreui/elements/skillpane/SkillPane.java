@@ -39,7 +39,7 @@ public class SkillPane<T extends AbstractBot & Mainclass<T>> extends HBox implem
         this.shownData = new SimpleObjectProperty<>(null);
         this.pinnedData = new SimpleObjectProperty<>(null);
 
-        bot.fxmlAttacher().attach(this, "resources/fxml/spectreui/SkillPaneLegacy.fxml");
+        bot.fxmlAttacher().attach(this, "resources/fxml/spectreui/SkillPane.fxml");
     }
 
     @Override
