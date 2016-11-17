@@ -1,13 +1,12 @@
 package net.celestialproductions.api.bot.spectreui;
 
 import com.runemate.game.api.client.ClientUI;
-import com.runemate.game.api.hybrid.local.Skill;
+import com.runemate.game.api.hybrid.Environment;
 import com.runemate.game.api.script.framework.AbstractBot;
-import com.runemate.game.api.script.framework.listeners.SkillListener;
-import com.runemate.game.api.script.framework.listeners.events.SkillEvent;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -15,17 +14,20 @@ import net.celestialproductions.api.bot.framework.IndependentLoopingThread;
 import net.celestialproductions.api.bot.framework.extender.Mainclass;
 import net.celestialproductions.api.bot.spectreui.core.InvalidSetupException;
 import net.celestialproductions.api.bot.spectreui.elements.ProfitPane;
+import net.celestialproductions.api.bot.spectreui.elements.SkillPaneLegacy;
 import net.celestialproductions.api.bot.spectreui.elements.Tab;
-import net.celestialproductions.api.bot.spectreui.elements.SkillPane;
-import net.celestialproductions.api.util.StringUtils;
+import net.celestialproductions.api.bot.spectreui.elements.skillpane.SkillPane;
 
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * @author Savior
  */
-public class SpectreUI<T extends AbstractBot & Mainclass<T>> extends VBox implements Initializable, SkillListener {
+public class SpectreUI<T extends AbstractBot & Mainclass<T>> extends VBox implements Initializable {
     @FXML
     private Button changeOptionsButton;
     @FXML
@@ -34,11 +36,9 @@ public class SpectreUI<T extends AbstractBot & Mainclass<T>> extends VBox implem
     private VBox tabContainer;
 
     private final T bot;
-    private final Map<Skill, Tab> skillsListed;
 
     public SpectreUI(final T bot) {
         this.bot = bot;
-        this.skillsListed = new HashMap<>();
 
         bot.fxmlAttacher().attach(this, "resources/fxml/spectreui/SpectreUI.fxml");
     }
@@ -61,10 +61,12 @@ public class SpectreUI<T extends AbstractBot & Mainclass<T>> extends VBox implem
             });
         }
 
-        bot.getEventDispatcher().addListener(this);
-
         final ProfitPane<T> profitPane = new ProfitPane<>(bot);
         add(new Tab("Profit", profitPane, Tab.Priority.LOWEST));
+
+        //Debug new skillpane
+        final Node skillPane = Environment.isSDK() ? new SkillPane<>(bot) : new SkillPaneLegacy<>(bot);
+        add(new Tab("Skills", skillPane, Tab.Priority.LOW));
 
         new IndependentLoopingThread(bot, "SpectreUI update thread", this::update, 1000L).start();
     }
@@ -91,21 +93,5 @@ public class SpectreUI<T extends AbstractBot & Mainclass<T>> extends VBox implem
 
     public void remove(final Tab... tabs) {
         Platform.runLater(() -> tabContainer.getChildren().removeAll(tabs));
-    }
-
-    public void remove(final Skill skill) {
-        remove(skillsListed.get(skill));
-        skillsListed.remove(skill);
-    }
-
-    @Override
-    public void onExperienceGained(final SkillEvent skillEvent) {
-        final Skill skill;
-        if (skillEvent.getChange() > 0 && skillEvent.getPrevious() > 0 && !skillsListed.containsKey(skill = skillEvent.getSkill())) {
-            final SkillPane<T> skillPane = new SkillPane<>(bot, skill);
-            final Tab tab = new Tab(StringUtils.capitalizeFully(skill.name()), skillPane, Tab.Priority.AUTOMATIC);
-            add(tab);
-            skillsListed.put(skill, tab);
-        }
     }
 }
