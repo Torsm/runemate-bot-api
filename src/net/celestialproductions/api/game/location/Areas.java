@@ -21,18 +21,10 @@ public final class Areas {
     }
 
     public static <T extends Rotatable & Locatable> Coordinate getFacingCoordinate(final T rotatable) {
-        return getFacingCoordinate(rotatable, rotatable, 0);
+        return getFacingCoordinate(rotatable, 0);
     }
 
     public static <T extends Rotatable & Locatable> Coordinate getFacingCoordinate(final T rotatable, int rotationOffset) {
-        return getFacingCoordinate(rotatable, rotatable, rotationOffset);
-    }
-
-    public static Coordinate getFacingCoordinate(final Rotatable rotatable, final Locatable locatable) {
-        return getFacingCoordinate(rotatable, locatable, 0);
-    }
-
-    public static Coordinate getFacingCoordinate(final Rotatable rotatable, final Locatable locatable, int rotationOffset) {
         final int dx, dy;
         final int angle = (rotatable.getOrientationAsAngle() + rotationOffset) % 360;
         switch (angle) {
@@ -53,7 +45,7 @@ public final class Areas {
                 dy = 0;
         }
 
-        return locatable.getPosition().derive(dx, dy);
+        return rotatable.getPosition().derive(dx, dy);
     }
 
     public static Coordinate getNearestReachableCoordinateWithin(final Locatable locatable, final Area area) {
