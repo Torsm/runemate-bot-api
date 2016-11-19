@@ -38,9 +38,9 @@ public class BotConfigurationUI<T extends AbstractBot & Mainclass<T>> extends VB
 
         startButton.setOnAction(e -> bot.getPlatform().invokeLater(() -> {
             try {
+                Platform.runLater(() -> bot.extender().botInterfaceProperty().set(bot.spectreUI()));
                 bot.startButtonPerformed();
                 bot.timer().start();
-                Platform.runLater(() -> bot.extender().botInterfaceProperty().set(bot.spectreUI()));
             } catch (InvalidSetupException ex) {
                 ClientUI.showAlert(ex.getMessage());
             }
