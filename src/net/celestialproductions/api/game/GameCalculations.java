@@ -47,7 +47,7 @@ public final class GameCalculations {
 
     public static int deviatedCameraYaw(final int min, final int max) {
         int yaw = Camera.getYaw();
-        yaw += Random.nextInt(min, max);
+        yaw += Random.nextInt(min, max) + 360;
         yaw %= 360;
         return yaw;
     }
