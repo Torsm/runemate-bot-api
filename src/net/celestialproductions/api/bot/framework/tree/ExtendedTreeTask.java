@@ -9,6 +9,7 @@ import net.celestialproductions.api.bot.framework.extender.Mainclass;
 import net.celestialproductions.api.game.antipattern.Antipattern;
 import net.celestialproductions.api.game.breakhandler.BreakScheduler;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.Callable;
 
@@ -17,8 +18,8 @@ import java.util.concurrent.Callable;
  */
 public class ExtendedTreeTask<T extends TreeBot & Mainclass<T>> extends TreeTask {
     private Callable<Boolean> validate;
-    private TreeTask successTask;
     private TreeTask failureTask;
+    private TreeTask successTask;
     private Antipattern.List antipatterns;
     private Player local;
     private T bot;
@@ -31,19 +32,19 @@ public class ExtendedTreeTask<T extends TreeBot & Mainclass<T>> extends TreeTask
         this(validate, null, null);
     }
 
-    public ExtendedTreeTask(final TreeTask successTask, final TreeTask failureTask) {
-        this(null, successTask, failureTask);
+    public ExtendedTreeTask(final TreeTask failureTask, final TreeTask successTask) {
+        this(null, failureTask, successTask);
     }
 
-    public ExtendedTreeTask(final Callable<Boolean> validate, final TreeTask successTask, final TreeTask failureTask) {
+    public ExtendedTreeTask(final Callable<Boolean> validate, final TreeTask failureTask, final TreeTask successTask) {
         this.validate = validate;
-        this.successTask = successTask;
         this.failureTask = failureTask;
+        this.successTask = successTask;
     }
 
     @Override
     public boolean isLeaf() {
-        return successTask() == null && failureTask() == null;
+        return failureTask() instanceof ExtendedTreeBot.EmptyLeaf && successTask() instanceof ExtendedTreeBot.EmptyLeaf;
     }
 
     @Override
@@ -52,21 +53,21 @@ public class ExtendedTreeTask<T extends TreeBot & Mainclass<T>> extends TreeTask
     }
 
     @Override
-    public TreeTask successTask() {
-        return successTask == null ? new ExtendedTreeBot.EmptyLeaf() : successTask;
-    }
-
-    @Override
     public TreeTask failureTask() {
         return failureTask == null ? new ExtendedTreeBot.EmptyLeaf() : failureTask;
     }
 
-    public void setSuccessTask(final TreeTask successTask) {
-        this.successTask = successTask;
+    @Override
+    public TreeTask successTask() {
+        return successTask == null ? new ExtendedTreeBot.EmptyLeaf() : successTask;
     }
 
     public void setFailureTask(final TreeTask failureTask) {
         this.failureTask = failureTask;
+    }
+
+    public void setSuccessTask(final TreeTask successTask) {
+        this.successTask = successTask;
     }
 
     @Override
@@ -104,6 +105,10 @@ public class ExtendedTreeTask<T extends TreeBot & Mainclass<T>> extends TreeTask
 
     public final BreakScheduler breakScheduler() {
         return bot().breakScheduler();
+    }
+
+    public final void setAntipatterns(final Antipattern... antipatterns) {
+        setAntipatterns(Arrays.asList(antipatterns));
     }
 
     public final void setAntipatterns(final Collection<Antipattern> antipatterns) {
