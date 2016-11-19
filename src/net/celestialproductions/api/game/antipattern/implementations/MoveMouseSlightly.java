@@ -9,8 +9,8 @@ import net.celestialproductions.api.game.antipattern.Antipattern;
 public class MoveMouseSlightly extends Antipattern {
 
     @Override
-    protected boolean run() {
-        return GameCalculations.deviatedMousePosition(-120, 100, -70, 80).hover();
+    protected void run() {
+        GameCalculations.deviatedMousePosition(-120, 100, -70, 80).hover();
     }
 
     @Override

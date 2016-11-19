@@ -5,6 +5,7 @@ import com.runemate.game.api.hybrid.util.calculations.Random;
 import net.celestialproductions.api.bot.framework.extender.BotExtender;
 import net.celestialproductions.api.bot.framework.extender.Mainclass;
 import net.celestialproductions.api.game.antipattern.implementations.MoveMouseSlightly;
+import net.celestialproductions.api.game.antipattern.implementations.RightClick;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,29 +16,29 @@ import java.util.Collection;
  */
 public abstract class Antipattern implements Onymous {
 
-    public final boolean consider() {
+    public final void consider() {
         //TODO enhance chance to execute
-        return Random.nextInt(0, 100) < 30 && execute();
+        if (Random.nextInt(0, 100) < 30) {
+            execute();
+        }
     }
 
-    public final boolean force() {
-        return execute();
+    public final void force() {
+        execute();
     }
 
-    private boolean execute() {
+    private void execute() {
         final Mainclass bot = BotExtender.instance();
         final String status = bot.getStatus();
         bot.setStatus("[Antipattern] " + getName());
-        final boolean b = run();
         bot.setStatus(status);
-        return b;
     }
 
-    protected abstract boolean run();
+    protected abstract void run();
 
     public static List defaultList() {
         //TODO implement more antipatterns
-        return new List(new MoveMouseSlightly());
+        return new List(new MoveMouseSlightly(), new RightClick());
     }
 
     public static class List extends ArrayList<Antipattern> {
