@@ -14,7 +14,7 @@ import java.awt.*;
 /**
  * @author Savior
  */
-public class GameCalculations {
+public final class GameCalculations {
 
     public static double cameraAngleTo(final Locatable locatable) {
         final Player local = Players.getLocal();
@@ -43,5 +43,12 @@ public class GameCalculations {
         final int devX = Random.nextInt(xMin, xMax) + cur.x;
         final int devY = Random.nextInt(yMin, yMax) + cur.y;
         return new InteractablePoint(devX, devY);
+    }
+
+    public static int deviatedCameraYaw(final int min, final int max) {
+        int yaw = Camera.getYaw();
+        yaw += Random.nextInt(min, max);
+        yaw %= 360;
+        return yaw;
     }
 }
