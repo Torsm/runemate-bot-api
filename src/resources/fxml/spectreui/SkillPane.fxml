@@ -7,7 +7,7 @@
 <fx:root alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="50.0" type="HBox" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane fx:id="diagramPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" rotate="-90.0" />
-      <StackPane fx:id="informationPane" prefHeight="280.0" prefWidth="330.0">
+      <StackPane fx:id="informationPane" prefHeight="250.0" prefWidth="300.0">
          <padding>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </padding>
