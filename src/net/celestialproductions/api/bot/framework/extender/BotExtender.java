@@ -45,7 +45,7 @@ public final class BotExtender<T extends AbstractBot & Mainclass<T>> implements 
         this.spectreUI = new AtomicReference<>(null);
         this.antipatterns = new Antipattern.List();
 
-        setStatus("Waiting for start...");
+        setStatus("Starting...");
     }
 
     /**

@@ -5,6 +5,7 @@ import com.runemate.game.api.hybrid.util.calculations.Random;
 import net.celestialproductions.api.bot.framework.extender.Mainclass;
 import net.celestialproductions.api.bot.framework.task.ExtendedTask;
 import net.celestialproductions.api.bot.framework.task.ExtendedTaskBot;
+import net.celestialproductions.api.game.antipattern.implementations.RightClick;
 
 import java.util.concurrent.TimeUnit;
 
@@ -14,6 +15,10 @@ import java.util.concurrent.TimeUnit;
 public class IdleLimiter<T extends ExtendedTaskBot & Mainclass<T>> extends ExtendedTask<T> {
     private final StopWatch watch = new StopWatch();
     private int nextRuntime = Random.nextInt(40, 200);
+
+    public IdleLimiter() {
+        setAntipatterns(new RightClick());
+    }
 
     @Override
     public boolean validate() {

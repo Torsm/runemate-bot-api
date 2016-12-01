@@ -87,4 +87,8 @@ public class ExtendedTask<T extends TaskBot & Mainclass<T>> extends Task {
     public final void setAntipatterns(final Collection<Antipattern> antipatterns) {
         this.antipatterns = new Antipattern.List(antipatterns);
     }
+
+    public final void setAntipatterns(final Antipattern... antipatterns) {
+        this.antipatterns = new Antipattern.List(antipatterns);
+    }
 }
