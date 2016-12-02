@@ -5,7 +5,10 @@ import com.runemate.game.api.hybrid.util.calculations.Random;
 import net.celestialproductions.api.bot.framework.extender.Mainclass;
 import net.celestialproductions.api.bot.framework.task.ExtendedTask;
 import net.celestialproductions.api.bot.framework.task.ExtendedTaskBot;
+import net.celestialproductions.api.bot.settings.ChanceSetting;
+import net.celestialproductions.api.game.antipattern.implementations.MoveCamera;
 import net.celestialproductions.api.game.antipattern.implementations.RightClick;
+import net.celestialproductions.api.game.antipattern.implementations.WheelCamera;
 
 import java.util.concurrent.TimeUnit;
 
@@ -13,11 +16,12 @@ import java.util.concurrent.TimeUnit;
  * @author Savior
  */
 public class IdleLimiter<T extends ExtendedTaskBot & Mainclass<T>> extends ExtendedTask<T> {
+    private final ChanceSetting afkChance = new ChanceSetting("afkChance", 0.2, 0.5);
     private final StopWatch watch = new StopWatch();
-    private int nextRuntime = Random.nextInt(40, 200);
+    private int nextRuntime;
 
     public IdleLimiter() {
-        setAntipatterns(new RightClick());
+        setAntipatterns(new RightClick(70), new WheelCamera(), new MoveCamera());
     }
 
     @Override
@@ -30,7 +34,7 @@ public class IdleLimiter<T extends ExtendedTaskBot & Mainclass<T>> extends Exten
     @Override
     public void execute() {
         antipattern().force();
-        nextRuntime = Random.nextInt(40, 200);
+        nextRuntime = (int) Random.nextGaussian(10, 210, afkChance.poll() ? 200 : 15);
         watch.reset();
     }
 }

@@ -134,7 +134,6 @@ public final class BotExtender<T extends AbstractBot & Mainclass<T>> implements 
     }
 
     public static Mainclass instance() {
-        final AbstractBot bot = Environment.getBot();
-        return bot instanceof Mainclass ? (Mainclass) bot : null;
+        return (Mainclass) Environment.getBot();
     }
 }

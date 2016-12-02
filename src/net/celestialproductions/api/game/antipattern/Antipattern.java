@@ -1,11 +1,13 @@
 package net.celestialproductions.api.game.antipattern;
 
-import com.runemate.game.api.hybrid.entities.details.Onymous;
 import com.runemate.game.api.hybrid.util.calculations.Random;
 import net.celestialproductions.api.bot.framework.extender.BotExtender;
 import net.celestialproductions.api.bot.framework.extender.Mainclass;
+import net.celestialproductions.api.bot.settings.ChanceSetting;
+import net.celestialproductions.api.game.antipattern.implementations.MoveCamera;
 import net.celestialproductions.api.game.antipattern.implementations.MoveMouseSlightly;
 import net.celestialproductions.api.game.antipattern.implementations.RightClick;
+import net.celestialproductions.api.game.antipattern.implementations.WheelCamera;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,13 +16,19 @@ import java.util.Collection;
 /**
  * @author Defeat3d
  */
-public abstract class Antipattern implements Onymous {
+public abstract class Antipattern {
+    private final ChanceSetting executionChance = new ChanceSetting("antipatternChance", 0.4, 0.7);
+    private final String name;
+    private final int weight;
+
+    public Antipattern(final String name, final int weight) {
+        this.name = name;
+        this.weight = weight;
+    }
 
     public final void consider() {
-        //TODO enhance chance to execute
-        if (Random.nextInt(0, 100) < 30) {
+        if (executionChance.poll())
             execute();
-        }
     }
 
     public final void force() {
@@ -30,15 +38,19 @@ public abstract class Antipattern implements Onymous {
     private void execute() {
         final Mainclass bot = BotExtender.instance();
         final String status = bot.getStatus();
-        bot.setStatus("[Antipattern] " + getName());
+        bot.setStatus("[Antipattern] " + name);
+        run();
         bot.setStatus(status);
     }
 
     protected abstract void run();
 
+    public int getWeight() {
+        return weight;
+    }
+
     public static List defaultList() {
-        //TODO implement more antipatterns
-        return new List(new MoveMouseSlightly(), new RightClick());
+        return new List(new MoveMouseSlightly(), new RightClick(), new WheelCamera(), new MoveCamera());
     }
 
     public static class List extends ArrayList<Antipattern> {
@@ -51,9 +63,16 @@ public abstract class Antipattern implements Onymous {
         }
 
         public Antipattern random() {
-            if (isEmpty())
-                return null;
-            return get(Random.nextInt(size()));
+            final int totalWeight = stream().mapToInt(Antipattern::getWeight).sum();
+            int random = Random.nextInt(totalWeight);
+
+            for (Antipattern antipattern : this) {
+                if (random < antipattern.getWeight())
+                    return antipattern;
+                random -= antipattern.getWeight();
+            }
+
+            return null;
         }
     }
 }

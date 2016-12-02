@@ -74,9 +74,8 @@ public class ExtendedTask<T extends TaskBot & Mainclass<T>> extends Task {
     }
 
     public final Antipattern antipattern() {
-        if (antipatterns != null) {
+        if (antipatterns != null)
             return antipatterns.random();
-        }
         return bot().getAntipatterns().random();
     }
 

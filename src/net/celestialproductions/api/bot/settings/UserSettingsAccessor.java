@@ -12,14 +12,10 @@ import java.io.File;
 public class UserSettingsAccessor {
     public final static ManagedProperties SHARED_SETTINGS;
 
-    /*
-     * Initialises general framework settings
-     */
     static {
         final File settingFile = new File(Environment.getSharedStorageDirectory() + File.separator + "Celestial Productions" + File.separator + "generalsettings.xml");
-        if (!settingFile.exists()) {
+        if (!settingFile.exists())
             settingFile.mkdirs();
-        }
         SHARED_SETTINGS = new ManagedProperties(settingFile);
     }
 
