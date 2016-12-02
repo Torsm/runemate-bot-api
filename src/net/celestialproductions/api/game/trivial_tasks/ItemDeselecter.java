@@ -8,7 +8,7 @@ import com.runemate.game.api.script.framework.task.Task;
 /**
  * @author Savior
  */
-public class DeselectItem extends Task {
+public class ItemDeselecter extends Task {
     private SpriteItem item;
 
     @Override

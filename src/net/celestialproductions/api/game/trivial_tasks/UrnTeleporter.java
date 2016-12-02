@@ -12,7 +12,7 @@ import net.celestialproductions.api.bot.framework.task.ExtendedTask;
 /**
  * @author Savior
  */
-public class TeleportUrn<T extends TaskBot & Mainclass<T>> extends ExtendedTask<T> {
+public class UrnTeleporter<T extends TaskBot & Mainclass<T>> extends ExtendedTask<T> {
     private SpriteItem urn;
 
     @Override

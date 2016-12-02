@@ -6,7 +6,7 @@ import com.runemate.game.api.script.framework.task.Task;
 /**
  * @author Savior
  */
-public class ClickContinue extends Task {
+public class DialogContinuer extends Task {
     private ChatDialog.Continue option;
 
     @Override

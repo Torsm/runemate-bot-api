@@ -8,7 +8,7 @@ import com.runemate.game.api.script.framework.task.Task;
 /**
  * @author Savior
  */
-public class SetCamera extends Task {
+public class CameraFixer extends Task {
 
     @Override
     public void execute() {

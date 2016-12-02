@@ -45,10 +45,9 @@ public final class GameCalculations {
         return new InteractablePoint(devX, devY);
     }
 
-    public static int deviatedCameraYaw(final int min, final int max) {
+    public static int deviatedCameraAngle(final int min, final int max) {
         int yaw = Camera.getYaw();
         yaw += Random.nextInt(min, max) + 360;
-        yaw %= 360;
-        return yaw;
+        return yaw % 360;
     }
 }
