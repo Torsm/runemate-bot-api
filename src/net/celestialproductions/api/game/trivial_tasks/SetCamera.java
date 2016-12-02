@@ -12,11 +12,11 @@ public class SetCamera extends Task {
 
     @Override
     public void execute() {
-        Camera.turnTo(Environment.isOSRS() ? 1.00 : 0.8);
+        Camera.turnTo(Environment.isOSRS() ? 1.00 : 0.45);
     }
 
     @Override
     public boolean validate() {
-        return RuneScape.isLoggedIn() && Camera.getPitch() < (Environment.isOSRS() ? 0.8 : 0.38);
+        return RuneScape.isLoggedIn() && Camera.getPitch() < (Environment.isOSRS() ? 0.8 : 0.3);
     }
 }

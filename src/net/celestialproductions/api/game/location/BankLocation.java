@@ -20,7 +20,7 @@ public enum BankLocation implements Locatable {
     FALADOR_WEST("Falador West",                         Type.FULL,    new Coordinate(2945, 3369, 0), new Coordinate(0,    0,    0)),
     FISHING_GUILD("Fishing Guild",                       Type.FULL,    new Coordinate(2584, 3422, 0), new Coordinate(2587, 3419, 0)),
     KARAMJA("Stiles",                                    Type.SPECIAL, new Coordinate(2851, 3143, 0), new Coordinate(3045, 3234, 0)),
-    LIVING_ROCK_CAVERNS("Living Rock Caverns",           Type.DEPOSIT, new Coordinate(3652, 5114, 0), new Coordinate(0,    0,    0)),
+    LIVING_ROCK_CAVERNS("Living Rock Caverns",           Type.SPECIAL, new Coordinate(3652, 5114, 0), new Coordinate(0,    0,    0)),
     LUMBRIDGE_CASTLE("Lumbridge Castle",                 Type.FULL,    new Coordinate(3208, 3219, 2), new Coordinate(3208, 3219, 2)),
     LUMBRIDGE_COMBAT_ACADEMY("Lumbridge Combat Academy", Type.FULL,    new Coordinate(3215, 3257, 0), new Coordinate(0,    0,    0)),
     PISCATORIS("Piscatoris",                             Type.FULL,    new Coordinate(2330, 3690, 0), new Coordinate(2330, 3690, 0)),
