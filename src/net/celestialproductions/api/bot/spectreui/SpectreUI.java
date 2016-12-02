@@ -61,6 +61,8 @@ public class SpectreUI<T extends AbstractBot & Mainclass<T>> extends VBox implem
             });
         }
 
+        statusLabel.textProperty().bind(bot.extender().statusProperty());
+
         final ProfitPane<T> profitPane = new ProfitPane<>(bot);
         add(new Tab("Profit", profitPane, Tab.Priority.LOWEST));
 
@@ -73,11 +75,7 @@ public class SpectreUI<T extends AbstractBot & Mainclass<T>> extends VBox implem
 
     public void update() {
         final String time = bot.timer().getRuntimeAsString();
-        final String status = bot.getStatus();
-        Platform.runLater(() -> {
-            runtimeLabel.setText(time);
-            statusLabel.setText(status);
-        });
+        Platform.runLater(() -> runtimeLabel.setText(time));
     }
 
     public void add(final Tab... tabs) {

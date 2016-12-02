@@ -2,6 +2,7 @@ package net.celestialproductions.api.game.antipattern.implementations;
 
 import com.runemate.game.api.hybrid.entities.Player;
 import com.runemate.game.api.hybrid.input.Mouse;
+import com.runemate.game.api.hybrid.local.hud.InteractablePoint;
 import com.runemate.game.api.hybrid.region.Players;
 import com.runemate.game.api.hybrid.util.calculations.Random;
 import com.runemate.game.api.script.Execution;
@@ -29,14 +30,23 @@ public class WheelCamera extends Antipattern {
     @Override
     public void run() {
         final Player local = Players.getLocal();
-        final int direction = directionChance.poll() ? 1 : -1;
+        final boolean direction = directionChance.poll();
+
         if (local != null) {
             for (int i = 0; i < Random.nextInt(1, 5); i++) {
+
+                final InteractablePoint pos;
+                if (direction) {
+                    pos = GameCalculations.deviatedMousePosition(-200, -50, -25, 25);
+                } else {
+                    pos = GameCalculations.deviatedMousePosition(50, 200, -25, 25);
+                }
+
                 local.hover();
                 if (Mouse.press(Mouse.Button.WHEEL))
-                    Mouse.move(GameCalculations.deviatedMousePosition(50 * direction, 200 * direction, -25, 25));
-                Mouse.release(Mouse.Button.WHEEL);
+                    Mouse.move(pos);
                 Execution.delay(100, 400);
+                Mouse.release(Mouse.Button.WHEEL);
             }
         }
     }

@@ -6,10 +6,14 @@ import com.runemate.game.api.hybrid.util.StopWatch;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.data.ScriptMetaData;
 import com.runemate.game.api.script.framework.AbstractBot;
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import net.celestialproductions.api.bot.settings.Setting;
+import net.celestialproductions.api.bot.settings.UserSettingsAccessor;
 import net.celestialproductions.api.bot.spectreui.BotConfigurationUI;
 import net.celestialproductions.api.bot.spectreui.SpectreUI;
 import net.celestialproductions.api.game.antipattern.Antipattern;
@@ -32,8 +36,8 @@ public final class BotExtender<T extends AbstractBot & Mainclass<T>> implements 
     private final ObjectProperty<Node> botInterfaceProperty;
     private final AtomicBoolean initializedSettings;
     private final AtomicReference<SpectreUI<T>> spectreUI;
+    private final StringProperty status;
     private Antipattern.List antipatterns;
-    private String status;
 
     public BotExtender(final T bot) {
         this.bot = bot;
@@ -43,6 +47,7 @@ public final class BotExtender<T extends AbstractBot & Mainclass<T>> implements 
         this.botInterfaceProperty = new SimpleObjectProperty<>(null);
         this.initializedSettings = new AtomicBoolean(false);
         this.spectreUI = new AtomicReference<>(null);
+        this.status = new SimpleStringProperty("");
         this.antipatterns = new Antipattern.List();
 
         setStatus("Starting...");
@@ -59,6 +64,7 @@ public final class BotExtender<T extends AbstractBot & Mainclass<T>> implements 
         final Setting<Integer> settingsVersionSetting = new Setting<>("settingsVersion", Setting.INTEGER_STRING_CONVERTER);
         if (settingsVersionSetting.get(0) != bot.settingsVersion()) {
             bot.getSettings().clear();
+            UserSettingsAccessor.SHARED_SETTINGS.clear();
             settingsVersionSetting.set(bot.settingsVersion());
         }
         initializedSettings.set(true);
@@ -98,10 +104,14 @@ public final class BotExtender<T extends AbstractBot & Mainclass<T>> implements 
     }
 
     public void setStatus(final String status) {
-        this.status = status;
+        Platform.runLater(() -> this.status.set(status));
     }
 
     public String getStatus() {
+        return status.get();
+    }
+
+    public StringProperty statusProperty() {
         return status;
     }
 
