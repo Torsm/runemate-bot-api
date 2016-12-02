@@ -5,10 +5,6 @@ import com.runemate.game.api.hybrid.entities.details.Rotatable;
 import com.runemate.game.api.hybrid.location.Area;
 import com.runemate.game.api.hybrid.location.Coordinate;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
 /**
  * @author Defeat3d
  */
@@ -46,21 +42,6 @@ public final class Areas {
         }
 
         return rotatable.getPosition().derive(dx, dy);
-    }
-
-    public static Coordinate getNearestReachableCoordinateWithin(final Locatable locatable, final Area area) {
-        final DistanceComparator comparator = new DistanceComparator(locatable);
-        List<Coordinate> coordinates = area.getCoordinates();
-        //coordinates.sort(comparator);
-        return coordinates.get(0);
-    }
-
-    public static Collection<Coordinate> getSurroundingWeb(final Locatable loc, final int radius, final boolean divide, final int divisibleBy) {
-        if (divide) {
-            final Collection<Coordinate> reachable = loc.getPosition().getReachableCoordinates();
-            return reachable.stream().filter(c -> c.getX() % divisibleBy == 0 && c.getY() % divisibleBy == 0 && c.distanceTo(loc) <= radius).collect(Collectors.toList());
-        }
-        return loc.getPosition().getReachableCoordinates();
     }
 
     public static Area.Rectangular enlarge(final Area.Rectangular area, final int increment) {

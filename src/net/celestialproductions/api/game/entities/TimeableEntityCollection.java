@@ -1,13 +1,11 @@
 package net.celestialproductions.api.game.entities;
 
+import com.runemate.game.api.hybrid.entities.LocatableEntity;
 import com.runemate.game.api.hybrid.entities.Player;
 import com.runemate.game.api.hybrid.location.Coordinate;
 import com.runemate.game.api.hybrid.region.Players;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -18,7 +16,7 @@ import java.util.stream.Collectors;
  *
  * @param <T> type of timeable entity that should be stored in this collection
  */
-public class TimeableEntityCollection<T extends TimeableEntity> extends CopyOnWriteArrayList<T> {
+public abstract class TimeableEntityCollection<L extends LocatableEntity, T extends TimeableEntity<L, ?>> extends CopyOnWriteArrayList<T> {
 
     /**
      * Constructs a collection of timeable entities and populates it
@@ -30,11 +28,13 @@ public class TimeableEntityCollection<T extends TimeableEntity> extends CopyOnWr
         addAll(Arrays.asList(entities));
     }
 
+    public abstract Collection<? extends L> raw();
+
     /**
      * Sorts the collection with a comparator that should return the best option to gain resources from
      * @return a collection sorted in a way that the best option to gain resources from is first
      */
-    public synchronized TimeableEntityCollection<T> sort() {
+    public synchronized TimeableEntityCollection<L, T> sort() {
         final Player local;
         final Coordinate pos;
         if ((local = Players.getLocal()) != null && (pos = local.getPosition()) != null) {
@@ -65,8 +65,9 @@ public class TimeableEntityCollection<T extends TimeableEntity> extends CopyOnWr
         return this;
     }
 
-    public TimeableEntityCollection<T> observeEntities() {
-        forEach(TimeableEntity::retrieveAvailability);
+    public TimeableEntityCollection<L, T> observeEntities() {
+        final Collection<? extends L> raw = raw();
+        forEach(t -> t.retrieveAvailability(raw));
         return this;
     }
 

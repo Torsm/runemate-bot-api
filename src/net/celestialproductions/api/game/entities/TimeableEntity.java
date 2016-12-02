@@ -11,6 +11,8 @@ import com.runemate.game.api.hybrid.util.StopWatch;
 import com.runemate.game.api.hybrid.util.Validatable;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -20,20 +22,20 @@ import java.util.regex.Pattern;
  *
  * @author Defeat3d
  *
- * @param <T> type of the underlying entity, for example Npc for a fishing spot, GameObject for a tree
- * @param <B> type of query builder required to attach the entity of type T
+ * @param <L> type of the underlying entity, for example Npc for a fishing spot, GameObject for a tree
+ * @param <B> type of query builder required to attach the entity of type L
  */
-public abstract class TimeableEntity<T extends LocatableEntity, B extends LocatableEntityQueryBuilder<T, B>> implements InstanceHolder<T, B>, Locatable, Interactable, Validatable {
+public abstract class TimeableEntity<L extends LocatableEntity, B extends LocatableEntityQueryBuilder<L, B>> implements Locatable, Interactable, Validatable {
     public static final long DEFAULT_EXPIRY = TimeUnit.MINUTES.toMillis(15);
-
+    private final long expiry; // expiry time used to set the status of entities out of detection range
     private final Coordinate position; // position this entity spawns at
     private final Callable<B> builder; // query builder to attach instances of this entity with
-    private final long expiry; // expiry time used to set the status of entities out of detection range
-
-    private boolean available, allowMovement = true;
-    private final StopWatch availabilityAge = new StopWatch(); // stopwatch that tracks how long this entity has had it's current status for
-    private T instance; // getInstance of our in-game entity, used for interaction etc
-    private long lastQuery = 0;
+    private final StopWatch availabilityAge; // stopwatch that tracks how long this entity has had it's current status for
+    private boolean available;
+    private boolean allowMovement;
+    private boolean fixedSpawnRate;
+    private long lastQuery;
+    private L instance; // instance of our in-game entity, used for interaction etc
 
     /**
      * Constructs a timeable entity on the given position, loaded using the given builder, with a default expiry time of 15 minutes
@@ -54,15 +56,17 @@ public abstract class TimeableEntity<T extends LocatableEntity, B extends Locata
         this.position = position;
         this.builder = builder;
         this.expiry = expiry;
+        this.allowMovement = true;
+        this.fixedSpawnRate = true;
+        this.availabilityAge = new StopWatch();
 
-        retrieveAvailability();
+        setAvailable(true);
         availabilityAge.start();
     }
 
     /**
      * @return the query builder to attach instances with
      */
-    @Override
     public final B builder() {
         try {
             return builder.call();
@@ -73,16 +77,13 @@ public abstract class TimeableEntity<T extends LocatableEntity, B extends Locata
     }
 
     /**
-     * @return an getInstance of our in-game entity
+     * If the last call was less than one game tick ago, the existing instance can be reused
+     * @return an instance of the in-game entity
      */
-    @Override
-    public final T instance() {
-        if (System.currentTimeMillis() - lastQuery < 600) {
+    public final L instance() {
+        if (System.currentTimeMillis() - lastQuery < 600L)
             return instance;
-        }
-
         lastQuery = System.currentTimeMillis();
-
         return (instance != null && instance.isValid() && (allowMovement || instance.getPosition().equals(position))) ? instance : (instance = builder().results().first());
     }
 
@@ -98,7 +99,6 @@ public abstract class TimeableEntity<T extends LocatableEntity, B extends Locata
     }
 
     /**
-     *
      * @return whether this entity is currently available in-game
      */
     public final boolean isAvailable() {
@@ -106,11 +106,11 @@ public abstract class TimeableEntity<T extends LocatableEntity, B extends Locata
     }
 
     /**
-     *
+     * If the availability changes or the entity does not have a constant respawn time, the availability age gets reset.
      * @param available value to set to our available property (used by an observer)
      */
     public final void setAvailable(final boolean available) {
-        if (this.available != available)
+        if (this.available != available || !fixedSpawnRate)
             resetAvailabilityAge();
         this.available = available;
     }
@@ -119,17 +119,14 @@ public abstract class TimeableEntity<T extends LocatableEntity, B extends Locata
      * Sets the available property to the correct one
      * @return whether this entity is currently available in-game
      */
-    public final boolean retrieveAvailability() {
+    public final boolean retrieveAvailability(final Collection<? extends L> raw) {
         final B b = builder();
-        if (b != null) {
-            setAvailable(!b.results().isEmpty());
-        }
-
+        if (b != null && isWithinLoadingDistance())
+            setAvailable(!b.provider(() -> new ArrayList<>(raw)).results().isEmpty());
         return available;
     }
 
     /**
-     *
      * @return the expiry time of this entity
      */
     public final long getExpiry() {
@@ -139,8 +136,33 @@ public abstract class TimeableEntity<T extends LocatableEntity, B extends Locata
     /**
      * Set whether or not the holding instance is allowed to change its position. If not, the instance gets renewed once it leaves position.
      */
-    public void setAllowMovement(boolean allowMovement) {
+    public void setAllowMovement(final boolean allowMovement) {
         this.allowMovement = allowMovement;
+    }
+
+    /**
+     * Set if the entity has a constant respawn rate. If not, the availability age will be reset on ever observation.
+     */
+    public void setFixedSpawnRate(final boolean fixedSpawnRate) {
+        this.fixedSpawnRate = fixedSpawnRate;
+    }
+
+    @Override
+    public String toString() {
+        final String[] split = super.toString().split("\\.");
+        return "[" + split[split.length - 1] + ": " + (available ? "Available" : "Unavailable") + " since " + getAvailabilityAge() + "ms]";
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        return getClass().isInstance(obj) && position.equals((getClass().cast(obj)).getPosition());
+    }
+
+    /**
+     * Determine if the position of this entity is within the loading distance of the type of LocatableEntity
+     */
+    public boolean isWithinLoadingDistance() {
+        return true;
     }
 
     /*
@@ -164,32 +186,32 @@ public abstract class TimeableEntity<T extends LocatableEntity, B extends Locata
 
     @Override
     public boolean interact(final Pattern pattern, final Pattern pattern1) {
-        return instance() != null ? instance.interact(pattern, pattern1) : position.interact(pattern, pattern1);
+        return instance() != null && instance.interact(pattern, pattern1);
     }
 
     @Override
     public boolean click() {
-        return instance() != null ? instance.click() : position.click();
+        return instance() != null && instance.click();
     }
 
     @Override
     public InteractablePoint getInteractionPoint(final Point point) {
-        return instance() != null ? instance.getInteractionPoint(point) : position.getInteractionPoint(point);
+        return instance() != null ? instance.getInteractionPoint(point) : null;
     }
 
     @Override
     public boolean contains(final Point point) {
-        return instance() != null ? instance.contains(point) : position.contains(point);
+        return instance() != null && instance.contains(point);
     }
 
     @Override
     public boolean hover() {
-        return instance() != null ? instance.hover() : position.hover();
+        return instance() != null && instance.hover();
     }
 
     @Override
     public boolean isVisible() {
-        return instance() != null ? instance.isVisible() : position.isVisible();
+        return instance() != null && instance.isVisible();
     }
 
     @Override
@@ -204,6 +226,6 @@ public abstract class TimeableEntity<T extends LocatableEntity, B extends Locata
 
     @Override
     public double getVisibility() {
-        return instance() != null ? instance.getVisibility() : position.getVisibility();
+        return instance() != null ? instance.getVisibility() : 0;
     }
 }
