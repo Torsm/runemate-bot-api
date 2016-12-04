@@ -18,6 +18,7 @@ import net.celestialproductions.api.bot.spectreui.BotConfigurationUI;
 import net.celestialproductions.api.bot.spectreui.SpectreUI;
 import net.celestialproductions.api.game.antipattern.Antipattern;
 import net.celestialproductions.api.game.breakhandler.BreakScheduler;
+import net.celestialproductions.api.util.Log;
 import net.celestialproductions.api.util.javafx.FXMLAttacher;
 
 import java.math.BigDecimal;
@@ -50,7 +51,7 @@ public final class BotExtender<T extends AbstractBot & Mainclass<T>> implements 
         this.status = new SimpleStringProperty("");
         this.antipatterns = new Antipattern.List();
 
-        setStatus("Starting...");
+        status.addListener(((observable, oldValue, newValue) -> Log.i("Status: " + newValue)));
     }
 
     /**

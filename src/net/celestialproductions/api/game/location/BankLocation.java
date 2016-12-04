@@ -23,13 +23,17 @@ public enum BankLocation implements Locatable {
     LIVING_ROCK_CAVERNS("Living Rock Caverns",           Type.SPECIAL, new Coordinate(3652, 5114, 0), new Coordinate(0,    0,    0)),
     LUMBRIDGE_CASTLE("Lumbridge Castle",                 Type.FULL,    new Coordinate(3208, 3219, 2), new Coordinate(3208, 3219, 2)),
     LUMBRIDGE_COMBAT_ACADEMY("Lumbridge Combat Academy", Type.FULL,    new Coordinate(3215, 3257, 0), new Coordinate(0,    0,    0)),
+    PISCARILIUS("Piscarilius (Zeah)",                    Type.FULL,    new Coordinate(0,    0,    0), new Coordinate(1804, 3790, 0)),
     PISCATORIS("Piscatoris",                             Type.FULL,    new Coordinate(2330, 3690, 0), new Coordinate(2330, 3690, 0)),
     PORT_PHASMATYS("Port Phasmatys",                     Type.FULL,    new Coordinate(0,    0,    0), new Coordinate(3690, 3466, 0)),
     PORT_SARIM("Port Sarim",                             Type.DEPOSIT, new Coordinate(3045, 3234, 0), new Coordinate(3045, 3234, 0)),
+    PRIFDDINAS_WATERFALL("Prifddinas Waterfall",         Type.FULL,    new Coordinate(2293, 3404, 2), new Coordinate(0,    0,    0)),
     SEERS_VILLAGE("Seer's Village",                      Type.FULL,    new Coordinate(2727, 3494, 0), new Coordinate(2725, 3492, 0)),
     SHILO_VILLAGE("Shilo Village",                       Type.FULL,    new Coordinate(2853, 2955, 0), new Coordinate(2853, 2955, 0)),
     VARROCK_EAST("Varrock East",                         Type.FULL,    new Coordinate(0,    0,    0), new Coordinate(3253, 3420, 0)),
-    VARROCK_WEST("Varrock West",                         Type.FULL,    new Coordinate(3190, 3435, 0), new Coordinate(0,    0,    0));
+    VARROCK_WEST("Varrock West",                         Type.FULL,    new Coordinate(3190, 3435, 0), new Coordinate(0,    0,    0)),
+    WAIKO("Waiko (The Arc)",                             Type.FULL,    new Coordinate(1831, 11613,0), new Coordinate(0,    0,    0)),
+    WHALES_MAW("Whale's Maw (The Arc)",                  Type.DEPOSIT, new Coordinate(2058, 11781,0), new Coordinate(0,    0,    0));
 
     private final String name;
     private final Type type;

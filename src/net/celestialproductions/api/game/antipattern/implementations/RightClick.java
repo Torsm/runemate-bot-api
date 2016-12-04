@@ -3,6 +3,7 @@ package net.celestialproductions.api.game.antipattern.implementations;
 import com.runemate.game.api.hybrid.input.Mouse;
 import com.runemate.game.api.hybrid.local.hud.InteractablePoint;
 import com.runemate.game.api.hybrid.util.calculations.Random;
+import com.runemate.game.api.script.Execution;
 import net.celestialproductions.api.bot.settings.Setting;
 import net.celestialproductions.api.bot.settings.UserSettingsAccessor;
 import net.celestialproductions.api.game.GameCalculations;
@@ -24,10 +25,12 @@ public class RightClick extends Antipattern {
 
     @Override
     protected void run() {
-        Mouse.click(Mouse.Button.RIGHT);
-        final InteractablePoint pos = GameCalculations.deviatedMousePosition(-50, 50, -70, -30);
+        if (Mouse.click(Mouse.Button.RIGHT)) {
+            final InteractablePoint pos = GameCalculations.deviatedMousePosition(-50, 50, -70, -30);
 
-        if (Mouse.move(GameCalculations.deviatedMousePosition(-30, 30, 20, 50)))
+            Mouse.move(GameCalculations.deviatedMousePosition(-30, 30, 40, 80));
+            Execution.delay(50, 350);
             Mouse.move(pos);
+        }
     }
 }

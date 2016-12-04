@@ -8,7 +8,6 @@ import com.runemate.game.api.hybrid.location.navigation.basic.BresenhamPath;
 import com.runemate.game.api.hybrid.location.navigation.cognizant.RegionPath;
 import com.runemate.game.api.hybrid.location.navigation.web.WebPathBuilder;
 import com.runemate.game.api.hybrid.region.Region;
-import com.runemate.game.api.hybrid.util.calculations.Distance;
 
 /**
  * @author Savior
@@ -16,47 +15,29 @@ import com.runemate.game.api.hybrid.util.calculations.Distance;
 public final class Pathing {
 
     public static Path buildSafePathTo(final Locatable destination) {
-        return buildSafePathTo(destination, Traversal.getDefaultWeb().getPathBuilder());
+        return buildSafePathTo(destination, Traversal.getDefaultWeb().getPathBuilder(), false);
+    }
+
+    public static Path buildSafePathTo(final Locatable destination, final boolean hasObstacles) {
+        return buildSafePathTo(destination, Traversal.getDefaultWeb().getPathBuilder(), hasObstacles);
     }
 
     public static Path buildSafePathTo(final Locatable destination, final WebPathBuilder builder) {
+        return buildSafePathTo(destination, builder, false);
+    }
+
+    public static Path buildSafePathTo(final Locatable destination, final WebPathBuilder builder, final boolean hasObstacles) {
         Path optional = null;
-        if (builder != null) {
+        if (builder != null)
             optional = builder.buildTo(destination);
-        }
 
         final Area area;
-        if (optional == null && (area = Region.getArea()) != null && area.contains(destination)) {
+        if (optional == null && (area = Region.getArea()) != null && area.contains(destination))
             optional = RegionPath.buildTo(destination);
-        }
 
-        if (optional == null) {
+        if (optional == null && !hasObstacles)
             optional = BresenhamPath.buildTo(destination);
-        }
 
         return optional;
     }
-
-    public static double totalDistance(final Path path) {
-        return totalDistance(path, Distance.getDefaultAlgorithm());
-    }
-
-    public static double totalDistance(final Path path, final Distance.Algorithm algorithm) {
-        if (path == null || algorithm == null) {
-            return 0;
-        }
-
-        double distance = 0;
-        Locatable last = null;
-
-        for (Locatable l : path.getVertices()) {
-            if (last != null) {
-                distance += Distance.between(l, last, algorithm);
-            }
-            last = l;
-        }
-
-        return distance;
-    }
-
 }

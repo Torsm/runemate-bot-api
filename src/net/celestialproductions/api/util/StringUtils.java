@@ -37,6 +37,10 @@ public final class StringUtils {
         return capitalize(string.toLowerCase());
     }
 
+    public static String capitalize(final Object object) {
+        return capitalize(object.toString());
+    }
+
     public static String capitalize(final String string) {
         final StringBuilder sb = new StringBuilder();
         for (String s : string.split(" ")) {

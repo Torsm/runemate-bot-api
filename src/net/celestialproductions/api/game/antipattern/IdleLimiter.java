@@ -34,7 +34,7 @@ public class IdleLimiter<T extends ExtendedTaskBot & Mainclass<T>> extends Exten
     @Override
     public void execute() {
         antipattern().force();
-        nextRuntime = (int) Random.nextGaussian(10, 210, afkChance.poll() ? 200 : 15);
+        nextRuntime = (int) Random.nextGaussian(20, 210, afkChance.poll() ? 200 : 30);
         watch.reset();
     }
 }

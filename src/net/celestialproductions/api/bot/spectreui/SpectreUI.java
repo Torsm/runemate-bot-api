@@ -52,6 +52,7 @@ public class SpectreUI<T extends AbstractBot & Mainclass<T>> extends VBox implem
             changeOptionsButton.setDisable(true);
             bot.getPlatform().invokeLater(() -> {
                 try {
+                    bot.setStatus("Starting...");
                     bot.startButtonPerformed();
                     bot.timer().start();
                 } catch (InvalidSetupException e) {
