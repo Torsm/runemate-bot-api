@@ -28,7 +28,7 @@
 }
 
 .skill-divination {
-    -fx-accent: #432D75;
+    -fx-accent: #653c99;
 }
 
 .skill-magic {
@@ -40,7 +40,7 @@
 }
 
 .skill-strength {
-    -fx-accent: #188C42;
+    -fx-accent: #1a9948;
 }
 
 .skill-defence {
@@ -52,7 +52,7 @@
 }
 
 .skill-prayer {
-    -fx-accent: #F2EFD7;
+    -fx-accent: #f2e6c0;
 }
 
 .skill-fishing {
@@ -60,7 +60,7 @@
 }
 
 .skill-agility {
-    -fx-accent: #232077;
+    -fx-accent: #1e32af;
 }
 
 .skill-herblore {
@@ -68,7 +68,7 @@
 }
 
 .skill-thieving {
-    -fx-accent: #863959;
+    -fx-accent: #863369;
 }
 
 .skill-mining {
@@ -84,27 +84,27 @@
 }
 
 .skill-slayer {
-    -fx-accent: #171516;
+    -fx-accent: #0d0b0a;
 }
 
 .skill-summoning {
-    -fx-accent: #B7D2ED;
+    -fx-accent: #a9d5ed;
 }
 
 .skill-runecrafting {
-    -fx-accent: #8D8F83;
+    -fx-accent: #969064;
 }
 
 .skill-fletching {
-    -fx-accent: #175041;
+    -fx-accent: #1a5d50;
 }
 
 .skill-cooking {
-    -fx-accent: #572366;
+    -fx-accent: #582c66;
 }
 
 .skill-construction {
-    -fx-accent: #A99C88;
+    -fx-accent: #a9937c;
 }
 
 .skill-dungeoneering {
@@ -128,5 +128,5 @@
 }
 
 .skill-invention {
-    -fx-accent: #D3CC17;
+    -fx-accent: #d3cb32;
 }
