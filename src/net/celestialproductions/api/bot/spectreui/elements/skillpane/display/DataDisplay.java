@@ -8,7 +8,6 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -21,7 +20,6 @@ import net.celestialproductions.api.util.StringUtils;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -57,7 +55,7 @@ public abstract class DataDisplay<T extends AbstractBot & Mainclass<T>> extends 
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         final DoubleBinding elementsWidth = skillVBox.widthProperty().add(levelVBox.widthProperty()).add(experienceVBox.widthProperty()).add(actionsVBox.widthProperty());
-        final DoubleBinding spacing = widthProperty().subtract(elementsWidth).divide(3).subtract(20);
+        final DoubleBinding spacing = widthProperty().subtract(elementsWidth).divide(3).subtract(10);
         final NumberBinding limitedSpacing = Bindings.max(25, spacing);
         dataFlowPane.hgapProperty().bind(limitedSpacing);
         dataHBox.spacingProperty().bind(limitedSpacing);

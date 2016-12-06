@@ -8,7 +8,6 @@ import com.runemate.game.api.script.framework.listeners.SkillListener;
 import com.runemate.game.api.script.framework.listeners.events.SkillEvent;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,7 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import net.celestialproductions.api.bot.framework.extender.Mainclass;
 import net.celestialproductions.api.util.StringUtils;
 
@@ -56,7 +54,7 @@ public class SkillTracker<T extends AbstractBot & Mainclass<T>> extends VBox imp
         estimatedTimeLabel.setText("00:00:00");
         removeButton.setOnAction(event -> container.remove(this));
 
-        final NumberBinding limitedWidth = Bindings.max(210, widthProperty().multiply(0.5));
+        final NumberBinding limitedWidth = Bindings.max(210, container.widthProperty().multiply(0.5));
         progressBar.maxWidthProperty().bind(limitedWidth);
 
         bot.getPlatform().invokeLater(() -> {
