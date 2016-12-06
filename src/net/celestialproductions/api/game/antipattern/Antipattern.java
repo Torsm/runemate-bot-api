@@ -17,7 +17,7 @@ import java.util.Collection;
  * @author Defeat3d
  */
 public abstract class Antipattern {
-    private final ChanceSetting executionChance = new ChanceSetting("antipatternChance", 0.3, 0.6);
+    private final ChanceSetting executionChance = new ChanceSetting("antipatternChance", 0.2, 0.5);
     private final String name;
     private final int weight;
 

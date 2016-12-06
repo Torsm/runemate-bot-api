@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  */
 public class ChargeComparator implements Comparator<SpriteItem> {
     private final static Pattern CHARGE_PATTERN = Pattern.compile("\\(\\d+\\)");
-    private final Map<SpriteItem, Integer> cache = new HashMap<>();
+    private final Map<Integer, Integer> cache = new HashMap<>();
 
     @Override
     public int compare(final SpriteItem s1, final SpriteItem s2) {
@@ -22,7 +22,7 @@ public class ChargeComparator implements Comparator<SpriteItem> {
     }
 
     private Integer getCharge(final SpriteItem s) {
-        return cache.computeIfAbsent(s, k -> {
+        return cache.computeIfAbsent(s.getId(), k -> {
             final ItemDefinition def = s.getDefinition();
             final String name = def == null ? null : def.getName();
 
@@ -31,7 +31,7 @@ public class ChargeComparator implements Comparator<SpriteItem> {
             if (name != null) {
                 final Matcher m = CHARGE_PATTERN.matcher(name);
                 if (m.find()) {
-                    result = m.group().replace("(", "").replace(")", "");
+                    result = m.group().replaceAll("(\\(||\\))", "");
                 }
             }
 

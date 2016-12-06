@@ -50,7 +50,7 @@ public class MotherlodePath extends Path {
         if (next != null) {
             if (next instanceof GameObject) {
                 final GameObject rock = (GameObject) next;
-                if (rock.isVisible()) {
+                if (rock.getVisibility() >= 90) {
                     final Player player;
                     return rock.interact("Mine") && (player = Players.getLocal()) != null && Execution.delayUntil(() -> player.getAnimationId() == -1 && !rock.isValid(), player::isMoving, 1200, 1800);
                 }
