@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * @author Savior
  */
 public class ChargeComparator implements Comparator<SpriteItem> {
-    private final static Pattern CHARGE_PATTERN = Pattern.compile("\\(\\d+\\)");
+    private final static Pattern CHARGE_PATTERN = Pattern.compile("\\([0-9]+\\)");
     private final Map<Integer, Integer> cache = new HashMap<>();
 
     @Override
@@ -31,7 +31,7 @@ public class ChargeComparator implements Comparator<SpriteItem> {
             if (name != null) {
                 final Matcher m = CHARGE_PATTERN.matcher(name);
                 if (m.find()) {
-                    result = m.group().replaceAll("(\\(||\\))", "");
+                    result = m.group().replaceAll("(\\(|\\))", "");
                 }
             }
 
