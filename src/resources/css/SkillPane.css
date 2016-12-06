@@ -1,0 +1,132 @@
+.spinner, .spinner:focused, .spinner:contains-focus {
+    -fx-background-insets: 0;
+    -fx-background-radius: 3;
+}
+
+.spinner > .text-field, .spinner:focused > .text-field, .spinner:contains-focus > .text-field {
+    -fx-background-color: -fx-background;
+    -fx-background-insets: 0;
+    -fx-background-radius: 3 0 0 3;
+}
+
+.accented-text {
+    -fx-font-size: 28;
+    -fx-text-fill: -fx-accent;
+}
+
+.diagram-entry {
+    -fx-fill: -fx-accent;
+    -fx-stroke: -fx-base;
+}
+
+.skill-total {
+    -fx-accent: #ffffff;
+}
+
+.skill-attack {
+    -fx-accent: #9A190D;
+}
+
+.skill-divination {
+    -fx-accent: #432D75;
+}
+
+.skill-magic {
+    -fx-accent: #3C4CAB;
+}
+
+.skill-constitution {
+    -fx-accent: #C54844;
+}
+
+.skill-strength {
+    -fx-accent: #188C42;
+}
+
+.skill-defence {
+    -fx-accent: #3A89EF;
+}
+
+.skill-ranged {
+    -fx-accent: #6F8A1D;
+}
+
+.skill-prayer {
+    -fx-accent: #F2EFD7;
+}
+
+.skill-fishing {
+    -fx-accent: #3E74D5;
+}
+
+.skill-agility {
+    -fx-accent: #232077;
+}
+
+.skill-herblore {
+    -fx-accent: #056A09;
+}
+
+.skill-thieving {
+    -fx-accent: #863959;
+}
+
+.skill-mining {
+    -fx-accent: #6B6763;
+}
+
+.skill-smithing {
+    -fx-accent: #6D6D6D;
+}
+
+.skill-woodcutting {
+    -fx-accent: #8B7454;
+}
+
+.skill-slayer {
+    -fx-accent: #171516;
+}
+
+.skill-summoning {
+    -fx-accent: #B7D2ED;
+}
+
+.skill-runecrafting {
+    -fx-accent: #8D8F83;
+}
+
+.skill-fletching {
+    -fx-accent: #175041;
+}
+
+.skill-cooking {
+    -fx-accent: #572366;
+}
+
+.skill-construction {
+    -fx-accent: #A99C88;
+}
+
+.skill-dungeoneering {
+    -fx-accent: #4F2E0E;
+}
+
+.skill-crafting {
+    -fx-accent: #9E7E58;
+}
+
+.skill-farming {
+    -fx-accent: #74A546;
+}
+
+.skill-firemaking {
+    -fx-accent: #BF7100;
+}
+
+.skill-hunter {
+    -fx-accent: #767053;
+}
+
+.skill-invention {
+    -fx-accent: #D3CC17;
+}

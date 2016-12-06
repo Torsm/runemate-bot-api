@@ -1,9 +1,8 @@
-package net.celestialproductions.api.bot.spectreui.elements.skillpane;
+package net.celestialproductions.api.bot.spectreui.elements.skillpane.display.diagram;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.util.Duration;
@@ -12,16 +11,10 @@ import javafx.util.Duration;
  * @author Savior
  */
 public class DiagramEntry extends Arc {
-    private final Color color;
 
-    public DiagramEntry(final Color color) {
+    public DiagramEntry() {
         super(100, 100, 0, 0, 0, 0);
-        this.color = color;
-
         setType(ArcType.ROUND);
-        setFill(color);
-        setStroke(BACKGROUND_COLOR);
-        setStrokeWidth(2);
         radiusYProperty().bind(radiusXProperty());
     }
 
@@ -33,7 +26,7 @@ public class DiagramEntry extends Arc {
         t.play();
     }
 
-    public void setAngle(final double angle, final double length) {
+    public void setLength(final double angle, final double length) {
         final Timeline t = new Timeline();
         final KeyValue vLength = new KeyValue(lengthProperty(), length);
         final KeyValue vAngle = new KeyValue(startAngleProperty(), angle);
@@ -42,5 +35,11 @@ public class DiagramEntry extends Arc {
         t.play();
     }
 
-    private final static Color BACKGROUND_COLOR = Color.rgb(24, 24, 24);
+    public void changeOpacity(final double opacity) {
+        final Timeline t = new Timeline();
+        final KeyValue v = new KeyValue(opacityProperty(), opacity);
+        final KeyFrame f = new KeyFrame(Duration.millis(100), v);
+        t.getKeyFrames().add(f);
+        t.play();
+    }
 }

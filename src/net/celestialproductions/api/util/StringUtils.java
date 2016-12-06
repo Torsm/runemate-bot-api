@@ -1,5 +1,7 @@
 package net.celestialproductions.api.util;
 
+import javafx.scene.paint.Color;
+
 /**
  * @author Savior
  */
@@ -18,19 +20,20 @@ public final class StringUtils {
             number = -number;
         }
 
-        if (number < 1000) {
+        if (number < 1000)
             return s + number;
-        }
 
         for (int i = 0; ; i++) {
-            if (number < 10000 && number % 1000 >= 100) {
+            if (number < 10000 && number % 1000 >= 100)
                 return s + (number / 1000) + '.' + ((number % 1000) / 100) + magnitudes[i];
-            }
             number /= 1000;
-            if (number < 1000) {
+            if (number < 1000)
                 return s + number + magnitudes[i];
-            }
         }
+    }
+
+    public static String getWebString(final Color color) {
+        return String.format( "#%02X%02X%02X", (int) (color.getRed() * 255), (int) (color.getGreen() * 255), (int) (color.getBlue() * 255));
     }
 
     public static String capitalizeFully(final String string) {
