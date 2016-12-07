@@ -26,11 +26,11 @@ public class RightClick extends Antipattern {
     @Override
     protected void run() {
         if (Mouse.click(Mouse.Button.RIGHT)) {
-            final InteractablePoint pos = GameCalculations.deviatedMousePosition(-50, 50, -70, -30);
+            final InteractablePoint currentPosition = GameCalculations.deviatedMousePosition(-50, 50, 20, 60);
 
-            Mouse.move(GameCalculations.deviatedMousePosition(-30, 30, 40, 80));
+            Mouse.move(GameCalculations.deviatedMousePosition(-30, 30, -40, -20));
             Execution.delay(50, 350);
-            Mouse.move(pos);
+            Mouse.move(currentPosition);
         }
     }
 }

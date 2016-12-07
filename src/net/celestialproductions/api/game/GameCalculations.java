@@ -5,6 +5,7 @@ import com.runemate.game.api.hybrid.entities.details.Locatable;
 import com.runemate.game.api.hybrid.input.Mouse;
 import com.runemate.game.api.hybrid.local.Camera;
 import com.runemate.game.api.hybrid.local.hud.InteractablePoint;
+import com.runemate.game.api.hybrid.local.hud.InteractableRectangle;
 import com.runemate.game.api.hybrid.location.Coordinate;
 import com.runemate.game.api.hybrid.region.Players;
 import com.runemate.game.api.hybrid.util.calculations.Random;
@@ -49,5 +50,13 @@ public final class GameCalculations {
         int yaw = Camera.getYaw();
         yaw += Random.nextInt(min, max) + 360;
         return yaw % 360;
+    }
+
+    public static InteractableRectangle expand(final InteractableRectangle rectangle, final int value) {
+        return expand(rectangle, value, value, value, value);
+    }
+
+    public static InteractableRectangle expand(final InteractableRectangle rectangle, final int left, final int right, final int top, final int bottom) {
+        return new InteractableRectangle(rectangle.x - left, rectangle.y - top, rectangle.width + right, rectangle.height + bottom);
     }
 }

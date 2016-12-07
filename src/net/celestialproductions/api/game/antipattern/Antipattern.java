@@ -8,6 +8,7 @@ import net.celestialproductions.api.game.antipattern.implementations.MoveCamera;
 import net.celestialproductions.api.game.antipattern.implementations.MoveMouseSlightly;
 import net.celestialproductions.api.game.antipattern.implementations.RightClick;
 import net.celestialproductions.api.game.antipattern.implementations.WheelCamera;
+import net.celestialproductions.api.util.Chance;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +18,7 @@ import java.util.Collection;
  * @author Defeat3d
  */
 public abstract class Antipattern {
-    private final ChanceSetting executionChance = new ChanceSetting("antipatternChance", 0.2, 0.5);
+    private final ChanceSetting executionChance = new ChanceSetting("antipatternChance", 0.2, 0.7);
     private final String name;
     private final int weight;
 
@@ -27,7 +28,11 @@ public abstract class Antipattern {
     }
 
     public final void consider() {
-        if (executionChance.poll())
+        consider(executionChance);
+    }
+
+    public final void consider(final Chance chance) {
+        if (chance.poll())
             execute();
     }
 

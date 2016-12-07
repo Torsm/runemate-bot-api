@@ -12,6 +12,8 @@ import com.runemate.game.api.hybrid.player_sense.PlayerSense;
 import com.runemate.game.api.hybrid.region.GameObjects;
 import com.runemate.game.api.hybrid.region.Players;
 import com.runemate.game.api.hybrid.region.Region;
+import com.runemate.game.api.hybrid.util.calculations.Distance;
+import com.runemate.game.api.hybrid.util.calculations.Random;
 import com.runemate.game.api.script.Execution;
 import net.celestialproductions.api.bot.settings.Setting;
 
@@ -50,7 +52,7 @@ public class MotherlodePath extends Path {
         if (next != null) {
             if (next instanceof GameObject) {
                 final GameObject rock = (GameObject) next;
-                if (rock.getVisibility() >= 90) {
+                if (Distance.to(rock) <  Random.nextInt(8, 13) && rock.getVisibility() >= 90) {
                     final Player player;
                     return rock.interact("Mine") && (player = Players.getLocal()) != null && Execution.delayUntil(() -> player.getAnimationId() == -1 && !rock.isValid(), player::isMoving, 1200, 1800);
                 }

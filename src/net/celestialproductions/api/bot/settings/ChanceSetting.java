@@ -1,11 +1,12 @@
 package net.celestialproductions.api.bot.settings;
 
 import com.runemate.game.api.hybrid.util.calculations.Random;
+import net.celestialproductions.api.util.Chance;
 
 /**
  * @author Savior
  */
-public class ChanceSetting extends Setting<Double> {
+public class ChanceSetting extends Setting<Double> implements Chance {
     private final double min;
     private final double max;
 
@@ -15,7 +16,8 @@ public class ChanceSetting extends Setting<Double> {
         this.max = max;
     }
 
-    public boolean poll() {
-        return get(Random.nextDouble(min, max)) > Math.random();
+    @Override
+    public double chance() {
+        return get(Random.nextDouble(min, max));
     }
 }
