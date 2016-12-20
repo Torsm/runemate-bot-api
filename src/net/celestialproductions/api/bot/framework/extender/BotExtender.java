@@ -62,7 +62,7 @@ public final class BotExtender<T extends AbstractBot & Mainclass<T>> implements 
      * UI to be loaded by setting the initializedSettings flag.
      */
     public void initialize() {
-        final Setting<Integer> settingsVersionSetting = new Setting<>("settingsVersion", Setting.INTEGER_STRING_CONVERTER);
+        final Setting<Integer> settingsVersionSetting = new Setting<>(bot.getSettings(), "settingsVersion", Setting.INTEGER_STRING_CONVERTER);
         if (settingsVersionSetting.get(0) != bot.settingsVersion()) {
             bot.getSettings().clear();
             UserSettingsAccessor.SHARED_SETTINGS.clear();

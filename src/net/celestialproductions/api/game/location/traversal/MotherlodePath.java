@@ -2,7 +2,9 @@ package net.celestialproductions.api.game.location.traversal;
 
 import com.runemate.game.api.hybrid.entities.GameObject;
 import com.runemate.game.api.hybrid.entities.Player;
+import com.runemate.game.api.hybrid.entities.definitions.GameObjectDefinition;
 import com.runemate.game.api.hybrid.entities.details.Locatable;
+import com.runemate.game.api.hybrid.local.Camera;
 import com.runemate.game.api.hybrid.location.Area;
 import com.runemate.game.api.hybrid.location.Coordinate;
 import com.runemate.game.api.hybrid.location.navigation.Path;
@@ -18,6 +20,7 @@ import com.runemate.game.api.script.Execution;
 import net.celestialproductions.api.bot.settings.Setting;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * @author Savior
@@ -26,6 +29,7 @@ import java.util.*;
  */
 public class MotherlodePath extends Path {
     private final static Area MOTHERLODE_REGION = new Area.Rectangular(new Coordinate(3650, 5550, 0), new Coordinate(3780, 5700, 0));
+    private final static Pattern PATTERN = Pattern.compile("(Mine|Climb)");
     private final Setting<Integer> DISTANCE_SETTING = new Setting<>("stepDistance", Setting.INTEGER_STRING_CONVERTER);
     private final List<Coordinate> vertices;
     private int deviation = 0;
@@ -37,10 +41,10 @@ public class MotherlodePath extends Path {
     @Override
     public boolean step(final TraversalOption... traversalOptions) {
         final List<TraversalOption> options = Arrays.asList(traversalOptions);
+        final Player local = Players.getLocal();
 
         final Coordinate destination;
-        final Player local;
-        if (options.contains(TraversalOption.MANAGE_DISTANCE_BETWEEN_STEPS) && (destination = Traversal.getDestination()) != null && (local = Players.getLocal()) != null && destination.distanceTo(local) > DISTANCE_SETTING.get(com.runemate.game.api.hybrid.util.calculations.Random.nextInt(6, 13))) {
+        if (options.contains(TraversalOption.MANAGE_DISTANCE_BETWEEN_STEPS) && (destination = Traversal.getDestination()) != null && local != null && destination.distanceTo(local) > DISTANCE_SETTING.get(Random.nextInt(6, 13))) {
             return false;
         }
 
@@ -51,10 +55,24 @@ public class MotherlodePath extends Path {
         final Locatable next = getNext();
         if (next != null) {
             if (next instanceof GameObject) {
-                final GameObject rock = (GameObject) next;
-                if (Distance.to(rock) <  Random.nextInt(8, 13) && rock.getVisibility() >= 90) {
-                    final Player player;
-                    return rock.interact("Mine") && (player = Players.getLocal()) != null && Execution.delayUntil(() -> player.getAnimationId() == -1 && !rock.isValid(), player::isMoving, 1200, 1800);
+                final GameObject obstacle = (GameObject) next;
+                final GameObjectDefinition def = obstacle.getDefinition();
+                final String name = def == null ? null : def.getName();
+                if (name != null && name.equals("Ladder")) {
+                    obstacle.setForcedModel(new int[]{-25, -50, 35}, new int[]{40, -150, 30});
+                }
+                if (!obstacle.isVisible()) {
+                    Camera.turnTo(obstacle, Random.nextDouble(0.3, Camera.getPitch()));
+                }
+                if (Distance.to(obstacle) <  Random.nextInt(8, 13) && obstacle.getVisibility() >= 90) {
+                    if (obstacle.interact(PATTERN)) {
+                        if (local != null) {
+                            local.getPosition().randomize(10, 10).minimap().hover();
+                            Execution.delayUntil(() -> local.getAnimationId() == -1 && !obstacle.isValid(), local::isMoving, 1200, 1800);
+                        }
+                        return true;
+                    }
+                    return false;
                 }
             }
 
@@ -80,14 +98,14 @@ public class MotherlodePath extends Path {
         Locatable l = null;
         final HashMap<String, Object> cache = new HashMap<>(20);
         for (Coordinate current : vertices) {
-            final GameObject rockfall = GameObjects.getLoadedOn(current, "Rockfall").first();
+            final GameObject obstacle = GameObjects.newQuery().on(current).names("Rockfall", "Ladder").results().first();
             if (current.minimap().isVisible(region, cache)) {
-                if (rockfall != null) {
-                    return rockfall;
+                if (obstacle != null) {
+                    return obstacle;
                 } else {
                     l = current;
                 }
-            } else if (rockfall != null) {
+            } else if (obstacle != null) {
                 return l;
             }
         }
@@ -123,7 +141,7 @@ public class MotherlodePath extends Path {
             return null;
 
         final int[][][] collisionFlags = Region.getCollisionFlags();
-        GameObjects.getLoaded("Rockfall").stream().map(o -> o.getPosition().derive(-base.getX(), -base.getY())).forEach(c -> {
+        GameObjects.newQuery().names("Rockfall", "Ladder").results().stream().map(o -> o.getPosition().derive(-base.getX(), -base.getY())).forEach(c -> {
             final int x = c.getX();
             final int y = c.getY();
             if (x >= 0 && y >= 0 && x < collisionFlags[0].length && y < collisionFlags[0][0].length)

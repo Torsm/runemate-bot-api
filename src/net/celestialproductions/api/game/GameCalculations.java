@@ -17,7 +17,7 @@ import java.awt.*;
  */
 public final class GameCalculations {
 
-    public static double cameraAngleTo(final Locatable locatable) {
+    public static int cameraAngleTo(final Locatable locatable) {
         final Player local = Players.getLocal();
         final Coordinate coord1 = local == null ? null : local.getPosition();
         final Coordinate coord2 = locatable == null ? null : locatable.getPosition();
@@ -36,7 +36,7 @@ public final class GameCalculations {
 
         double yaw = Camera.getYaw() - 180D;
 
-        return Math.abs(180D - Math.abs(yaw - angle));
+        return Math.abs(180 - (int) Math.abs(yaw - angle));
     }
 
     public static InteractablePoint deviatedMousePosition(final int xMin, final int xMax, final int yMin, final int yMax) {
