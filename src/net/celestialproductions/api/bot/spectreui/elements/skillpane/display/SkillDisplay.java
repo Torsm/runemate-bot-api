@@ -11,7 +11,6 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.paint.Color;
 import net.celestialproductions.api.bot.framework.extender.Mainclass;
 import net.celestialproductions.api.bot.spectreui.elements.skillpane.SkillPane;
 import net.celestialproductions.api.bot.spectreui.elements.skillpane.display.diagram.DiagramEntry;
@@ -19,8 +18,6 @@ import net.celestialproductions.api.bot.spectreui.elements.skillpane.display.tra
 import net.celestialproductions.api.util.StringUtils;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;

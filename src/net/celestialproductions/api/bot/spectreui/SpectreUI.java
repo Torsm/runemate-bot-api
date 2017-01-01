@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import net.celestialproductions.api.bot.framework.IndependentLoopingThread;
 import net.celestialproductions.api.bot.framework.extender.Mainclass;
 import net.celestialproductions.api.bot.spectreui.core.InvalidSetupException;
-import net.celestialproductions.api.bot.spectreui.elements.ProfitPane;
+import net.celestialproductions.api.bot.spectreui.elements.ProfitPaneLegacy;
 import net.celestialproductions.api.bot.spectreui.elements.Tab;
 import net.celestialproductions.api.bot.spectreui.elements.skillpane.SkillPane;
 
@@ -34,7 +34,7 @@ public class SpectreUI<T extends AbstractBot & Mainclass<T>> extends VBox implem
 
     private final T bot;
     private SkillPane<T> skillPane;
-    private ProfitPane<T> profitPane;
+    private ProfitPaneLegacy<T> profitPane;
 
     public SpectreUI(final T bot) {
         this.bot = bot;
@@ -63,7 +63,7 @@ public class SpectreUI<T extends AbstractBot & Mainclass<T>> extends VBox implem
 
         statusLabel.textProperty().bind(bot.extender().statusProperty());
 
-        profitPane = new ProfitPane<>(bot);
+        profitPane = new ProfitPaneLegacy<>(bot);
         add(new Tab("Profit", profitPane, Tab.Priority.LOWEST));
 
         skillPane = new SkillPane<>(bot);

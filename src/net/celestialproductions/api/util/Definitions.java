@@ -7,19 +7,19 @@ import com.runemate.game.api.hybrid.entities.definitions.NpcDefinition;
 /**
  * @author Savior
  */
-public class Definitions {
+public final class Definitions {
 
-    public static String nameOf(final ItemDefinition definition) {
+    public static String getName(final ItemDefinition definition) {
         final String name = definition == null ? null : definition.getName();
         return name == null ? "" : name;
     }
 
-    public static String nameOf(final NpcDefinition definition) {
+    public static String getName(final NpcDefinition definition) {
         final String name = definition == null ? null : definition.getName();
         return name == null ? "" : name;
     }
 
-    public static String nameOf(final GameObjectDefinition definition) {
+    public static String getName(final GameObjectDefinition definition) {
         final String name = definition == null ? null : definition.getName();
         return name == null ? "" : name;
     }

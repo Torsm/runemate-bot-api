@@ -13,13 +13,13 @@ import java.util.ResourceBundle;
 /**
  * @author Savior
  */
-public class ProfitPane<T extends AbstractBot & Mainclass<T>> extends VBox implements Initializable, InventoryListener {
+public class ProfitPaneLegacy<T extends AbstractBot & Mainclass<T>> extends VBox implements Initializable, InventoryListener {
     private final T bot;
 
-    public ProfitPane(final T bot) {
+    public ProfitPaneLegacy(final T bot) {
         this.bot = bot;
 
-        bot.fxmlAttacher().attach(this, "resources/fxml/spectreui/ProfitPane.fxml");
+        bot.fxmlAttacher().attach(this, "resources/fxml/spectreui/ProfitPaneLegacy.fxml");
     }
 
     @Override

@@ -2,7 +2,6 @@ package net.celestialproductions.api.bot.spectreui.elements.skillpane.display.tr
 
 import com.runemate.game.api.hybrid.local.Skill;
 import com.runemate.game.api.script.framework.AbstractBot;
-import com.runemate.game.api.script.framework.listeners.events.SkillEvent;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,11 +9,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import net.celestialproductions.api.bot.framework.extender.Mainclass;
 
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
