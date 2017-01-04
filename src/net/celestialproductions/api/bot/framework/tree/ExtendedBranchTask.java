@@ -3,6 +3,7 @@ package net.celestialproductions.api.bot.framework.tree;
 import com.runemate.game.api.hybrid.Environment;
 import com.runemate.game.api.hybrid.entities.Player;
 import com.runemate.game.api.hybrid.region.Players;
+import com.runemate.game.api.script.framework.tree.BranchTask;
 import com.runemate.game.api.script.framework.tree.TreeBot;
 import com.runemate.game.api.script.framework.tree.TreeTask;
 import net.celestialproductions.api.bot.framework.extender.Mainclass;
@@ -16,7 +17,7 @@ import java.util.concurrent.Callable;
 /**
  * @author Savior
  */
-public class ExtendedTreeTask<T extends TreeBot & Mainclass<T>> extends TreeTask {
+public class ExtendedBranchTask<T extends TreeBot & Mainclass<T>> extends BranchTask {
     private Callable<Boolean> validate;
     private TreeTask failureTask;
     private TreeTask successTask;
@@ -24,32 +25,35 @@ public class ExtendedTreeTask<T extends TreeBot & Mainclass<T>> extends TreeTask
     private Player local;
     private T bot;
 
-    public ExtendedTreeTask() {
+    public ExtendedBranchTask() {
         this(null, null, null);
     }
 
-    public ExtendedTreeTask(final Callable<Boolean> validate) {
+    public ExtendedBranchTask(final Callable<Boolean> validate) {
         this(validate, null, null);
     }
 
-    public ExtendedTreeTask(final TreeTask failureTask, final TreeTask successTask) {
+    public ExtendedBranchTask(final TreeTask failureTask, final TreeTask successTask) {
         this(null, failureTask, successTask);
     }
 
-    public ExtendedTreeTask(final Callable<Boolean> validate, final TreeTask failureTask, final TreeTask successTask) {
+    public ExtendedBranchTask(final Callable<Boolean> validate, final TreeTask failureTask, final TreeTask successTask) {
         this.validate = validate;
         this.failureTask = failureTask;
         this.successTask = successTask;
     }
 
     @Override
-    public boolean isLeaf() {
-        return failureTask() instanceof ExtendedTreeBot.EmptyLeaf && successTask() instanceof ExtendedTreeBot.EmptyLeaf;
-    }
-
-    @Override
-    public void execute() {
-
+    public boolean validate() {
+        if (validate != null) {
+            try {
+                return validate.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -68,19 +72,6 @@ public class ExtendedTreeTask<T extends TreeBot & Mainclass<T>> extends TreeTask
 
     public void setSuccessTask(final TreeTask successTask) {
         this.successTask = successTask;
-    }
-
-    @Override
-    public boolean validate() {
-        if (validate != null) {
-            try {
-                return validate.call();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        return true;
     }
 
     public final Player local() {

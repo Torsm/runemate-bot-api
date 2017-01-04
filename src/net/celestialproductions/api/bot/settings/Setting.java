@@ -2,6 +2,7 @@ package net.celestialproductions.api.bot.settings;
 
 import com.runemate.game.api.hybrid.Environment;
 import com.runemate.game.api.hybrid.util.io.ManagedProperties;
+import com.runemate.game.api.script.framework.AbstractBot;
 import javafx.util.StringConverter;
 import javafx.util.converter.BooleanStringConverter;
 import javafx.util.converter.DoubleStringConverter;
@@ -34,6 +35,16 @@ public class Setting<T> {
     }
 
     /**
+     * Creates a new setting in the given bot's settings
+     * @param bot Instance of the bot to get the settings from
+     * @param name Name of the setting
+     * @param conv Converter
+     */
+    public Setting(final AbstractBot bot, final String name, final StringConverter<T> conv) {
+        this(bot.getSettings(), name, conv);
+    }
+
+    /**
      * Creates a new setting
      * @param context Either general or bot setting
      * @param name Name of the setting
@@ -44,7 +55,6 @@ public class Setting<T> {
         this.conv = conv;
         this.context = context;
     }
-
 
     /**
      * @return The availability of the setting
