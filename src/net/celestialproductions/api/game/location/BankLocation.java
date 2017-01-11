@@ -10,6 +10,7 @@ import com.runemate.game.api.hybrid.location.Coordinate;
  */
 public enum BankLocation implements Locatable {
     NONE("None",                                         Type.NONE,    new Coordinate(0,    0,    0), new Coordinate(0,    0,    0)),
+    AL_KHARID("Al Kharid",                               Type.FULL,    new Coordinate(3270, 3167, 0), new Coordinate(3270, 3167, 0)),
     APE_ATOLL_SOUTH("Ape Atoll",                         Type.DEPOSIT, new Coordinate(3047, 3237, 0), new Coordinate(3047, 3237, 0)),
     ARDOUGNE_EAST("Ardougne East",                       Type.FULL,    new Coordinate(2655, 3283, 0), new Coordinate(2655, 3283, 0)),
     BARBARIAN_OUTPOST("Barbarian outpost",               Type.FULL,    new Coordinate(2535, 3572, 0), new Coordinate(2535, 3572, 0)),
