@@ -17,7 +17,9 @@ import net.celestialproductions.api.bot.framework.extender.Mainclass;
 import net.celestialproductions.api.bot.spectreui.elements.skillpane.display.DataDisplay;
 import net.celestialproductions.api.bot.spectreui.elements.skillpane.display.SkillDisplay;
 import net.celestialproductions.api.bot.spectreui.elements.skillpane.display.SummaryDisplay;
+import net.celestialproductions.api.util.ResourceUtils;
 
+import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Map;
@@ -52,12 +54,15 @@ public class SkillPane<T extends AbstractBot & Mainclass<T>> extends HBox implem
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         bot.getPlatform().invokeLater(() -> {
-            try {
-                final String vanity = Resources.getAsURL("resources/css/VanityItem.css").toURI().toString();
-                final String tracker = Resources.getAsURL("resources/css/SkillPane.css").toURI().toString();
-                Platform.runLater(() -> getStylesheets().addAll(vanity, tracker));
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
+            final File skillPane = ResourceUtils.writeToFile("resources/css/SkillPane.css");
+            if (skillPane != null) {
+                skillPane.deleteOnExit();
+                Platform.runLater(() -> getStylesheets().add(skillPane.toURI().toString()));
+            }
+            final File vanityItem = ResourceUtils.writeToFile("resources/css/VanityItem.css");
+            if (vanityItem != null) {
+                vanityItem.deleteOnExit();
+                Platform.runLater(() -> getStylesheets().add(vanityItem.toURI().toString()));
             }
         });
 

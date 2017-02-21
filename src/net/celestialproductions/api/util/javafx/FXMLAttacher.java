@@ -2,10 +2,12 @@ package net.celestialproductions.api.util.javafx;
 
 import com.runemate.game.api.hybrid.util.Resources;
 import com.runemate.game.api.script.framework.AbstractBot;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
@@ -25,15 +27,19 @@ public class FXMLAttacher {
      * @param path Path
      */
     public void attach(final Node controller, final String path) {
-        try {
-            final URL url = bot.getPlatform().invokeAndWait(() -> Resources.getAsURL(path));
-            final FXMLLoader fxmlLoader = new FXMLLoader(url);
-            fxmlLoader.setRoot(controller);
-            fxmlLoader.setController(controller);
-            fxmlLoader.load();
-        } catch (ExecutionException | InterruptedException | IOException e) {
-            e.printStackTrace();
-        }
-    }
+        bot.getPlatform().invokeLater(() -> {
+            final InputStream stream = Resources.getAsStream(path);
 
+            Platform.runLater(() -> {
+                final FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setRoot(controller);
+                fxmlLoader.setController(controller);
+                try {
+                    fxmlLoader.load(stream);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        });
+    }
 }
